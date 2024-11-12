@@ -13,7 +13,7 @@ const client = new OAuth2Client(
 const authenticateGoogleUser = async (token: string) => {
   try {
     const tokenInfo = await client.getTokenInfo(token);
-    const { email, name, sub: googleId } = tokenInfo;
+    const { email, name, sub: externalId } = tokenInfo;
 
     if (!email) {
       throw new ApiError(
@@ -22,14 +22,14 @@ const authenticateGoogleUser = async (token: string) => {
       );
     }
 
-    let user = await prisma.user.findUnique({ where: { email } });
+    let user = await prisma.user.findUnique({ where: { externalId } });
 
     if (!user) {
       user = await prisma.user.create({
         data: {
           email,
           name: name || '',
-          googleId,
+          externalId,
           password: '',
         },
       });
