@@ -18,6 +18,7 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
+   externalId   String  @unique
 
   @@map("users")
 }
