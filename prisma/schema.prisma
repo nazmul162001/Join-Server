@@ -18,9 +18,37 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
-   externalId   String  @unique
+   externalId   String  @unique     @default("")
 
   @@map("users")
+}
+
+model JobPost {
+  id                String           @id @default(uuid())
+  title             String
+  responsibilities  String           @db.Text
+  category          String
+  skill             String           @db.Text // Can store a JSON string representing an array of skills
+  duration          String           @db.Text
+  perks             String           @db.Text // Can store a JSON string representing an array of perks
+  coverLetter       String?
+  availability      String
+  assessment        String           @db.Text // Can store a JSON string representing an array of assessments
+  vacancy           Int
+  location          String
+  employmentType    EmploymentType
+  experienceLevel   ExperienceLevel
+  salary            Int?
+  salaryType        SalaryType?      // hourly, annual, etc.
+  currency          CurrencyType?    // USD, BDT, etc.
+  postedBy          String           // HR user ID or username
+  status            JobStatus        @default(ACTIVE)
+  remote            Boolean          @default(false)
+  companyName       String
+  postedAt          DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@map("job_posts")
 }
 
 model Service {
@@ -38,4 +66,48 @@ model Service {
   status String
 
   @@map("services")
+}
+
+
+
+// Enum for job status
+enum JobStatus {
+  ACTIVE
+  INACTIVE
+  CLOSED
+}
+
+// Enum for employment type
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  TEMPORARY
+  INTERNSHIP
+  FREELANCE
+}
+
+// Enum for experience level
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  EXECUTIVE
+}
+
+// Enum for salary type
+enum SalaryType {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUAL
+}
+
+// Enum for salary type
+enum CurrencyType {
+  USD
+  BDT
+  INR
 }
