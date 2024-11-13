@@ -18,9 +18,40 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
+   externalId   String  @unique     @default("")
 
   @@map("users")
 }
+
+model JobPost {
+  id                String       @id @default(uuid())
+  title             String
+  responsibilities  String       @db.Text
+  category          String
+  skill             String       @db.Text // Store JSON string representing an array
+  duration          String       @db.Text
+  perks             String?      @db.Text // Optional JSON string for array
+  coverLetter       String?
+  availability      String
+  assessment        String?      @db.Text // Optional JSON string for array
+  vacancy           Int
+  location          String
+  employmentType    EmploymentType
+  experienceLevel   ExperienceLevel
+  salary            Int?
+  salaryType        SalaryType?
+  currency          CurrencyType?
+  postedBy          String
+  status            JobStatus    @default(ACTIVE)
+  remote            Boolean      @default(false)
+  companyName       String
+  postedAt          DateTime     @default(now())
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@map("job_posts")
+}
+
 
 model Service {
   id   String  @id @default(uuid())
@@ -37,4 +68,48 @@ model Service {
   status String
 
   @@map("services")
+}
+
+
+
+// Enum for job status
+enum JobStatus {
+  ACTIVE
+  INACTIVE
+  CLOSED
+}
+
+// Enum for employment type
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  TEMPORARY
+  INTERNSHIP
+  FREELANCE
+}
+
+// Enum for experience level
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  EXECUTIVE
+}
+
+// Enum for salary type
+enum SalaryType {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUAL
+}
+
+// Enum for salary type
+enum CurrencyType {
+  USD
+  BDT
+  INR
 }

@@ -7,6 +7,7 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL DEFAULT '',
     "profileImage" TEXT NOT NULL DEFAULT '',
     "phoneNumber" TEXT NOT NULL DEFAULT '',
+    "externalId" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -31,3 +32,6 @@ CREATE TABLE "services" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_externalId_key" ON "users"("externalId");
