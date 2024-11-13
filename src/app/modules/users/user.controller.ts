@@ -1,10 +1,11 @@
+import { User } from '@prisma/client';
 import { Request, Response } from 'express';
+// @ts-ignore
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
-import { User } from '@prisma/client';
 
 // get all users
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
@@ -86,7 +87,7 @@ const deleteSingleUser = catchAsync(async (req: Request, res: Response) => {
 // get user profile
 const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getUserProfile(
-    (req.user as JwtPayload).userId
+    (req.user as JwtPayload).userId,
   );
 
   sendResponse<User>(res, {
