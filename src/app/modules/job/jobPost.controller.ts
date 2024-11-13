@@ -12,16 +12,6 @@ import {
 import { JobPostService } from './jobPost.service';
 
 // Get all job posts with filtering
-// const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
-//   const filters: IJobPostFilterRequest = req.query;
-//   const jobPosts = await JobPostService.getAllJobPosts(filters);
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'All job posts retrieved successfully',
-//     data: jobPosts,
-//   });
-// });
 
 const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
   const filters: IJobPostFilterRequest = pick(
