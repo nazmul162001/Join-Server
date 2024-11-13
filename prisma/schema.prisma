@@ -24,32 +24,34 @@ model User {
 }
 
 model JobPost {
-  id                String           @id @default(uuid())
+  id                String       @id @default(uuid())
   title             String
-  responsibilities  String           @db.Text
+  responsibilities  String       @db.Text
   category          String
-  skill             String           @db.Text // Can store a JSON string representing an array of skills
-  duration          String           @db.Text
-  perks             String           @db.Text // Can store a JSON string representing an array of perks
+  skill             String       @db.Text // Store JSON string representing an array
+  duration          String       @db.Text
+  perks             String?      @db.Text // Optional JSON string for array
   coverLetter       String?
   availability      String
-  assessment        String           @db.Text // Can store a JSON string representing an array of assessments
+  assessment        String?      @db.Text // Optional JSON string for array
   vacancy           Int
   location          String
   employmentType    EmploymentType
   experienceLevel   ExperienceLevel
   salary            Int?
-  salaryType        SalaryType?      // hourly, annual, etc.
-  currency          CurrencyType?    // USD, BDT, etc.
-  postedBy          String           // HR user ID or username
-  status            JobStatus        @default(ACTIVE)
-  remote            Boolean          @default(false)
+  salaryType        SalaryType?
+  currency          CurrencyType?
+  postedBy          String
+  status            JobStatus    @default(ACTIVE)
+  remote            Boolean      @default(false)
   companyName       String
-  postedAt          DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  postedAt          DateTime     @default(now())
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
   @@map("job_posts")
 }
+
 
 model Service {
   id   String  @id @default(uuid())
