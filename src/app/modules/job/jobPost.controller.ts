@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
+// @ts-ignore
 import httpStatus from 'http-status';
 import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import {
+  IJobPost,
   IJobPostFilterRequest,
   JobPostFilterableFields,
   JobPostPriceSearchableFields,
@@ -58,7 +60,37 @@ const getSingleJobPost = catchAsync(async (req: Request, res: Response) => {
 });
 
 // Create a new job post
+// const createJobPost = catchAsync(async (req: Request, res: Response) => {
+//   const jobPostData = {
+//     ...req.body,
+//     skill: JSON.stringify(req.body.skill),
+//     perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined,
+//     assessment: req.body.assessment
+//       ? JSON.stringify(req.body.assessment)
+//       : undefined,
+//   };
+
+//   const newJobPost = await JobPostService.createJobPost(jobPostData);
+
+//   sendResponse(res, {
+//     statusCode: httpStatus.CREATED,
+//     success: true,
+//     message: 'Job post created successfully',
+//     data: newJobPost,
+//   });
+// });
+// @ts-ignore
 const createJobPost = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  console.log(userId, 'userIDDDDDDDD');
+
+  if (!userId) {
+    return res.status(401).json({
+      success: false,
+      message: 'Unauthorized: User not authenticated',
+    });
+  }
+
   const jobPostData = {
     ...req.body,
     skill: JSON.stringify(req.body.skill),
@@ -66,6 +98,7 @@ const createJobPost = catchAsync(async (req: Request, res: Response) => {
     assessment: req.body.assessment
       ? JSON.stringify(req.body.assessment)
       : undefined,
+    userDataId: userId, // Link job post to the authenticated user
   };
 
   const newJobPost = await JobPostService.createJobPost(jobPostData);
