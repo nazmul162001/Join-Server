@@ -23,6 +23,7 @@ const getSingleService = async (id: string) => {
     where: {
       id,
     },
+    // @ts-ignore
     include: {
       reviews: {
         include: {
@@ -38,7 +39,7 @@ const getSingleService = async (id: string) => {
 // update service
 const updateService = async (
   id: string,
-  data: Partial<Service>
+  data: Partial<Service>,
 ): Promise<Service | null> => {
   console.log(id, data);
   const service = await prisma.service.update({
@@ -64,7 +65,7 @@ const deleteService = async (id: string) => {
 const getAllService = async (
   filters: IServiceFilterRequest,
   options: IPaginationOptions,
-  priceQuery: IPriceFilters
+  priceQuery: IPriceFilters,
 ): Promise<IGenericResponse<Service[]>> => {
   const { page, size, skip } = paginationHelpers.calculatePagination(options);
   const { search, ...filtersData } = filters;
