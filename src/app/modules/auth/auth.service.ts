@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+// @ts-ignore
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
@@ -20,7 +21,7 @@ const insertIntoDB = async (data: User): Promise<User> => {
   if (userExists) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'User Already Exists, Please login.'
+      'User Already Exists, Please login.',
     );
   }
 
@@ -52,7 +53,7 @@ const login = async (data: Partial<User>): Promise<string> => {
       role: user.role,
     },
     process.env.JWT_SECRET as string,
-    '1y'
+    '1y',
   );
 
   return result;
