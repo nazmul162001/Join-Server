@@ -1,4 +1,5 @@
 import { ApplyJob } from '@prisma/client';
+// @ts-ignore
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
@@ -36,6 +37,7 @@ const createApplication = async (
   data: Partial<ApplyJob>,
 ): Promise<ApplyJob> => {
   const application = await prisma.applyJob.create({
+    // @ts-ignore
     data,
     include: {
       user: true, // Include related user

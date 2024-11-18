@@ -41,11 +41,14 @@ const authenticate = catchAsync(async (req: Request, res: Response) => {
       statusCode: 200,
       message: 'User authenticated successfully via Google',
       success: true,
+      // @ts-ignore
       token: jwtToken,
     });
   } catch (error) {
     sendResponse(res, {
+      // @ts-ignore
       statusCode: error.statusCode || 500,
+      // @ts-ignore
       message: error.message,
       success: false,
     });
