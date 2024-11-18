@@ -1,5 +1,6 @@
 import { Service } from '@prisma/client';
 import { Request, Response } from 'express';
+// @ts-ignore
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
@@ -30,7 +31,7 @@ const getAllService = catchAsync(async (req: Request, res: Response) => {
   const service = await InternetService.getAllService(
     filters,
     options,
-    priceQuery
+    priceQuery,
   );
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -77,8 +78,6 @@ const deleteService = catchAsync(async (req: Request, res: Response) => {
     data: service,
   });
 });
-
-
 
 export const InternetServiceController = {
   createService,
