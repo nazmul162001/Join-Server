@@ -1,4 +1,5 @@
 import express from 'express';
+import { ApplyJobRoutes } from '../modules/apply/apply.route';
 import { AuthRoutes } from '../modules/auth/auth.route';
 import { googleRoutes } from '../modules/google/google.route';
 import { JobPostRoutes } from '../modules/job/jobPost.route';
@@ -27,6 +28,10 @@ const moduleRoutes = [
   {
     path: '/job',
     route: JobPostRoutes,
+  },
+  {
+    path: '/job',
+    route: ApplyJobRoutes,
   },
 ];
 

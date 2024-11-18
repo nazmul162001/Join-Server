@@ -18,7 +18,9 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
-   externalId   String  @unique     @default("")
+
+  jobPosts         JobPost[]
+  applications     ApplyJob[]
 
   @@map("users")
 }
@@ -28,12 +30,12 @@ model JobPost {
   title             String
   responsibilities  String       @db.Text
   category          String
-  skill             String       @db.Text // Store JSON string representing an array
+  skill             String       @db.Text
   duration          String       @db.Text
-  perks             String?      @db.Text // Optional JSON string for array
+  perks             String?      @db.Text
   coverLetter       String?
   availability      String
-  assessment        String?      @db.Text // Optional JSON string for array
+  assessment        String?      @db.Text
   vacancy           Int
   location          String
   employmentType    EmploymentType
@@ -49,9 +51,35 @@ model JobPost {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
+  userData  User? @relation(fields: [userDataId], references: [id])
+  userDataId  String?
+
+  applications      ApplyJob[]
+
   @@map("job_posts")
 }
 
+model ApplyJob {
+  id           String   @id @default(uuid())
+  name         String
+  email        String
+  phone        String
+  linkedin     String
+  github       String
+  portfolio    String
+  coverLetter  String   @db.Text
+
+  jobPost      JobPost  @relation(fields: [jobPostId], references: [id])
+  jobPostId    String   // Foreign key for JobPost
+
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   // Foreign key for User
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+
+  @@map("apply_jobs")
+}
 
 model Service {
   id   String  @id @default(uuid())

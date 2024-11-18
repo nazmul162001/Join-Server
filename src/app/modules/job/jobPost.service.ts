@@ -95,6 +95,9 @@ const getAllJobPosts = async (
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
         : { postedAt: 'desc' },
+    include: {
+      userData: true,
+    },
   });
 
   const total = await prisma.jobPost.count({ where: whereConditions });
@@ -117,9 +120,19 @@ const getSingleJobPost = async (id: string): Promise<JobPost | null> => {
 };
 
 // Create a new job post
+// const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
+//   return prisma.jobPost.create({
+//     data,
+//   });
+// };
+
 const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
   return prisma.jobPost.create({
+    // @ts-ignore
     data,
+    include: {
+      userData: true, // Include user data in the response
+    },
   });
 };
 
@@ -130,6 +143,7 @@ const updateSingleJobPost = async (
 ): Promise<JobPost | null> => {
   return prisma.jobPost.update({
     where: { id },
+    // @ts-ignore
     data,
   });
 };

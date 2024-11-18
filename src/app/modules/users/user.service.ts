@@ -1,11 +1,17 @@
 import { User } from '@prisma/client';
+// @ts-ignore
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 
 // get all users
 const getAllUsers = async (): Promise<User[]> => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    include: {
+      jobPosts: true,
+      applications: true,
+    },
+  });
   return users;
 };
 
@@ -22,7 +28,7 @@ const getSingleUser = async (id: string): Promise<User | null> => {
 // update single user
 const updateSingleUser = async (
   id: string,
-  data: Partial<User>
+  data: Partial<User>,
 ): Promise<User | null> => {
   const updateUser = await prisma.user.update({
     where: {
@@ -50,7 +56,8 @@ const getUserProfile = async (id: string): Promise<User> => {
       id: id,
     },
     include: {
-      bookings: true
+      // @ts-ignore
+      bookings: true,
     },
   });
 
