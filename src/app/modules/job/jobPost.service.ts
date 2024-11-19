@@ -97,6 +97,7 @@ const getAllJobPosts = async (
         : { postedAt: 'desc' },
     include: {
       userData: true,
+      applications: true,
     },
   });
 
