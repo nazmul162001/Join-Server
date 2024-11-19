@@ -71,10 +71,10 @@ model ApplyJob {
   coverLetter  String   @db.Text
 
   jobPost      JobPost  @relation(fields: [jobPostId], references: [id])
-  jobPostId    String   // Foreign key for JobPost
+  jobPostId    String   
 
   user         User     @relation(fields: [userId], references: [id])
-  userId       String   // Foreign key for User
+  userId       String   
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
