@@ -8,7 +8,6 @@ import prisma from '../../../shared/prisma';
 const getAllApplications = async (): Promise<ApplyJob[]> => {
   const applications = await prisma.applyJob.findMany({
     include: {
-      user: true, // Include related user
       jobPost: true, // Include related job post
     },
   });
@@ -20,7 +19,6 @@ const getSingleApplication = async (id: string): Promise<ApplyJob | null> => {
   const application = await prisma.applyJob.findUnique({
     where: { id },
     include: {
-      user: true, // Include related user
       jobPost: true, // Include related job post
     },
   });
@@ -34,16 +32,34 @@ const getSingleApplication = async (id: string): Promise<ApplyJob | null> => {
 
 // Create a new application
 const createApplication = async (
-  data: Partial<ApplyJob>,
+  data: Partial<ApplyJob> & { candidateId?: string },
 ): Promise<ApplyJob> => {
+  const { candidateId, ...applicationData } = data;
+
+  // Verify if candidate exists, if candidateId is provided
+  if (candidateId) {
+    const candidateExists = await prisma.candidateProfile.findUnique({
+      where: { id: candidateId },
+    });
+
+    if (!candidateExists) {
+      throw new Error('Candidate ID does not exist');
+    }
+  }
+
+  // Create the application
   const application = await prisma.applyJob.create({
     // @ts-ignore
-    data,
+    data: {
+      ...applicationData,
+      candidate: candidateId ? { connect: { id: candidateId } } : undefined, // Connect candidate if candidateId is provided
+    },
     include: {
-      user: true, // Include related user
-      jobPost: true, // Include related job post
+      jobPost: true,
+      candidate: true, // Include candidate in the response
     },
   });
+
   return application;
 };
 
@@ -56,7 +72,6 @@ const updateApplication = async (
     where: { id },
     data,
     include: {
-      user: true, // Include related user
       jobPost: true, // Include related job post
     },
   });
@@ -73,7 +88,6 @@ const deleteApplication = async (id: string): Promise<ApplyJob | null> => {
   const deletedApplication = await prisma.applyJob.delete({
     where: { id },
     include: {
-      user: true, // Include related user
       jobPost: true, // Include related job post
     },
   });
