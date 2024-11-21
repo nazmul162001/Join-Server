@@ -1,6 +1,9 @@
 import express from 'express';
 import { ApplyJobRoutes } from '../modules/apply/apply.route';
 import { AuthRoutes } from '../modules/auth/auth.route';
+import { CalendarEventRoutes } from '../modules/candidateProfile/calendar-event/event.route';
+import { CandidateEducationRoutes } from '../modules/candidateProfile/education/education.route';
+import { WorkExperienceRoutes } from '../modules/candidateProfile/experience/experience.route';
 import { HistoryRoutes } from '../modules/candidateProfile/history/history.route';
 import { CandidateProfileRoutes } from '../modules/candidateProfile/profile/candidateProfile.route';
 import { RecommendationRoutes } from '../modules/candidateProfile/recommendation/recommendation.route';
@@ -52,6 +55,18 @@ const moduleRoutes = [
   {
     path: '/history',
     route: HistoryRoutes,
+  },
+  {
+    path: '/education',
+    route: CandidateEducationRoutes,
+  },
+  {
+    path: '/experience',
+    route: WorkExperienceRoutes,
+  },
+  {
+    path: '/calendar-event',
+    route: CalendarEventRoutes,
   },
 ];
 
