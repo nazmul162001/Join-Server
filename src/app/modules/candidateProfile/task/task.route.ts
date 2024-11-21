@@ -5,21 +5,22 @@ import { TaskValidation } from './task.validation';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .post(
-    validateRequest(TaskValidation.taskValidationSchema),
-    TaskController.createTask,
-  )
-  .get(TaskController.getAllTasks);
+router.post(
+  '/',
+  validateRequest(TaskValidation.taskValidationSchema),
+  TaskController.createTask,
+);
 
-router
-  .route('/:id')
-  .get(TaskController.getTask)
-  .patch(
-    validateRequest(TaskValidation.taskValidationSchema),
-    TaskController.updateTask,
-  )
-  .delete(TaskController.deleteTask);
+router.get('/', TaskController.getAllTasks);
+
+router.get('/:id', TaskController.getTask);
+
+router.patch(
+  '/:id',
+  validateRequest(TaskValidation.taskValidationSchema),
+  TaskController.updateTask,
+);
+
+router.delete('/:id', TaskController.deleteTask);
 
 export const TaskRoutes = router;
