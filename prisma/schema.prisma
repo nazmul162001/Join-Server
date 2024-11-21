@@ -19,8 +19,6 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
-  
-  applications     ApplyJob[]
   profile     CandidateProfile[]
 
   @@map("users")
@@ -167,6 +165,7 @@ model JobPost {
   status            JobStatus    @default(ACTIVE)
   remote            Boolean      @default(false)
   companyName       String
+  userDataId        String?
   postedAt          DateTime     @default(now())
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
@@ -175,6 +174,7 @@ model JobPost {
 
   @@map("job_posts")
 }
+
 
 model ApplyJob {
   id           String   @id @default(uuid())
@@ -188,9 +188,6 @@ model ApplyJob {
 
   jobPost      JobPost  @relation(fields: [jobPostId], references: [id])
   jobPostId    String   
-
-  user         User     @relation(fields: [userId], references: [id])
-  userId       String  
 
   candidate    CandidateProfile?     @relation(fields: [candidateId], references: [id])
   candidateId       String? 

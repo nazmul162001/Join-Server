@@ -5,6 +5,7 @@ import { CalendarEventRoutes } from '../modules/candidateProfile/calendar-event/
 import { CandidateEducationRoutes } from '../modules/candidateProfile/education/education.route';
 import { WorkExperienceRoutes } from '../modules/candidateProfile/experience/experience.route';
 import { HistoryRoutes } from '../modules/candidateProfile/history/history.route';
+import { PreferenceRoutes } from '../modules/candidateProfile/preferrence/preferrence.route';
 import { CandidateProfileRoutes } from '../modules/candidateProfile/profile/candidateProfile.route';
 import { RecommendationRoutes } from '../modules/candidateProfile/recommendation/recommendation.route';
 import { TaskRoutes } from '../modules/candidateProfile/task/task.route';
@@ -67,6 +68,10 @@ const moduleRoutes = [
   {
     path: '/calendar-event',
     route: CalendarEventRoutes,
+  },
+  {
+    path: '/preferences',
+    route: PreferenceRoutes,
   },
 ];
 
