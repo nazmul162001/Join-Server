@@ -19,11 +19,130 @@ model User {
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
-
-  jobPosts         JobPost[]
+  
   applications     ApplyJob[]
+  profile     CandidateProfile[]
 
   @@map("users")
+}
+
+model CandidateProfile {
+  id                 String   @id @default(uuid())
+  profileCompletion  Int      @default(0)
+  name               String?
+  location           String?
+  primaryRole        String?
+  yearsOfExperience  Int?
+  openToRoles        String[]
+  bio                String?
+  website            String?
+  linkedin           String?
+  github             String?
+  twitter            String?
+  resume             String? 
+  skills             String[]
+  achievements       String?
+  pronouns           String?
+  genderIdentity     String?
+  ethnicity          String[]
+  tasks              SendTask[]
+  recommendations    Recommendation[]
+  history            CandidateHistory[]
+  education          CandidateEducation[]
+  workExperience     WorkExperience[]
+  calendarEvents     CalendarEvent[]
+  applications       ApplyJob[]
+  preferences        Preferences[]
+  
+  candidateId  String
+  candidate    User @relation(fields: [candidateId], references: [id])
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model SendTask {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      String
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model Recommendation {
+  id          String   @id @default(uuid())
+  recommendedBy String
+  message      String?
+  candidateId  String
+  candidate    CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model CandidateHistory {
+  id          String   @id @default(uuid())
+  actionType  String
+  details     String
+  createdAt   DateTime @default(now())
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model CandidateEducation {
+  id          String   @id @default(uuid())
+  schoolName  String
+  degree      String
+  fieldOfStudy String
+  startDate   DateTime
+  endDate     DateTime
+  grade       String?
+  description String?
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model WorkExperience {
+  id          String   @id @default(uuid())
+  companyName String
+  title       String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model CalendarEvent {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  date        DateTime
+  meetingLink String?
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+}
+
+model Preferences {
+  id                     String   @id @default(uuid())
+  areasOfInterest        String[]
+  careerInterests        String[]
+  currentlyLookingFor    String[]
+  workModes              String[]
+  jobType                String[]
+  preferredIndustries    String[]
+  preferredLocations     String[]
+  salaryExpectationRange String? 
+  openToRelocation       Boolean 
+  remoteWorkPreference   Boolean 
+  companySizePreference  String[]
+  employmentLevel        String[]
+  desiredJobTitles       String[]
+  skillImprovementAreas  String[]
+  preferredWorkEnvironment String?
+  availableStartDate     DateTime?
+  preferredLanguages     String[] 
+  candidateId            String   
+  candidate              CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
 model JobPost {
@@ -52,9 +171,6 @@ model JobPost {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
-  userData  User? @relation(fields: [userDataId], references: [id])
-  userDataId  String?
-
   applications      ApplyJob[]
 
   @@map("job_posts")
@@ -74,7 +190,10 @@ model ApplyJob {
   jobPostId    String   
 
   user         User     @relation(fields: [userId], references: [id])
-  userId       String   
+  userId       String  
+
+  candidate    CandidateProfile?     @relation(fields: [candidateId], references: [id])
+  candidateId       String? 
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt

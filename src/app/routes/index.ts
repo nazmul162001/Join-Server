@@ -1,6 +1,8 @@
 import express from 'express';
 import { ApplyJobRoutes } from '../modules/apply/apply.route';
 import { AuthRoutes } from '../modules/auth/auth.route';
+import { CandidateProfileRoutes } from '../modules/candidateProfile/profile/candidateProfile.route';
+import { TaskRoutes } from '../modules/candidateProfile/task/task.route';
 import { googleRoutes } from '../modules/google/google.route';
 import { JobPostRoutes } from '../modules/job/jobPost.route';
 import { ServiceRoute } from '../modules/service/service.route';
@@ -32,6 +34,14 @@ const moduleRoutes = [
   {
     path: '/job',
     route: ApplyJobRoutes,
+  },
+  {
+    path: '/profile',
+    route: CandidateProfileRoutes,
+  },
+  {
+    path: '/task',
+    route: TaskRoutes,
   },
 ];
 

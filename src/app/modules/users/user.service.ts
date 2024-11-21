@@ -8,7 +8,7 @@ import prisma from '../../../shared/prisma';
 const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany({
     include: {
-      jobPosts: true,
+      profile: true,
       applications: true,
     },
   });
@@ -54,10 +54,6 @@ const getUserProfile = async (id: string): Promise<User> => {
   const result = await prisma.user.findUnique({
     where: {
       id: id,
-    },
-    include: {
-      // @ts-ignore
-      bookings: true,
     },
   });
 
