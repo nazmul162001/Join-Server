@@ -96,7 +96,7 @@ const getAllJobPosts = async (
         ? { [options.sortBy]: options.sortOrder }
         : { postedAt: 'desc' },
     include: {
-      userData: true,
+      applications: true,
     },
   });
 
@@ -130,9 +130,6 @@ const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
   return prisma.jobPost.create({
     // @ts-ignore
     data,
-    include: {
-      userData: true, // Include user data in the response
-    },
   });
 };
 
