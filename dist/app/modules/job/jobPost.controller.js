@@ -15,8 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JobPostController = void 0;
 // @ts-ignore
 const http_status_1 = __importDefault(require("http-status"));
+const pagination_1 = require("../../../constants/pagination");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
+const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
+const jobPost_interface_1 = require("./jobPost.interface");
 const jobPost_service_1 = require("./jobPost.service");
 const createJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const jobPost = yield jobPost_service_1.JobPostService.createJobPost(req.body);
@@ -57,13 +60,26 @@ const deleteJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: deletedJobPost,
     });
 }));
-const getAllJobPosts = (0, catchAsync_1.default)((_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const jobPosts = yield jobPost_service_1.JobPostService.getAllJobPosts();
+// const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
+//   const jobPosts = await JobPostService.getAllJobPosts();
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Job Posts retrieved successfully',
+//     data: jobPosts,
+//   });
+// });
+const getAllJobPosts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const filters = (0, pick_1.default)(req.query, jobPost_interface_1.JobPostFilterableFields);
+    const priceQuery = (0, pick_1.default)(req.query, jobPost_interface_1.JobPostPriceSearchableFields);
+    const options = (0, pick_1.default)(req.query, pagination_1.paginationFields);
+    const jobPosts = yield jobPost_service_1.JobPostService.getAllJobPosts(filters, options, priceQuery);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Job Posts retrieved successfully',
-        data: jobPosts,
+        message: 'All job posts retrieved successfully',
+        meta: jobPosts.meta,
+        data: jobPosts.data,
     });
 }));
 exports.JobPostController = {
