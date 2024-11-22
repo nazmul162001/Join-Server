@@ -9,7 +9,6 @@ const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany({
     include: {
       profile: true,
-      applications: true,
     },
   });
   return users;
