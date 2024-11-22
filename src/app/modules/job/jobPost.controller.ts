@@ -1,165 +1,67 @@
 import { Request, Response } from 'express';
 // @ts-ignore
 import httpStatus from 'http-status';
-import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
-import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import {
-  IJobPost,
-  IJobPostFilterRequest,
-  JobPostFilterableFields,
-  JobPostPriceSearchableFields,
-} from './jobPost.interface';
 import { JobPostService } from './jobPost.service';
 
-// Get all job posts with filtering
-
-const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
-  const filters: IJobPostFilterRequest = pick(
-    req.query,
-    JobPostFilterableFields,
-  );
-  const priceQuery = pick(req.query, JobPostPriceSearchableFields);
-  const options = pick(req.query, paginationFields);
-
-  const jobPosts = await JobPostService.getAllJobPosts(
-    filters,
-    options,
-    priceQuery,
-  );
-
+const createJobPost = catchAsync(async (req: Request, res: Response) => {
+  const jobPost = await JobPostService.createJobPost(req.body);
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: httpStatus.CREATED,
     success: true,
-    message: 'All job posts retrieved successfully',
-    meta: jobPosts.meta,
-    data: jobPosts.data,
-  });
-});
-
-// Get a single job post by ID
-const getSingleJobPost = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const jobPost = await JobPostService.getSingleJobPost(id);
-
-  if (!jobPost) {
-    return sendResponse(res, {
-      statusCode: httpStatus.NOT_FOUND,
-      success: false,
-      message: 'Job post not found',
-    });
-  }
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Job post retrieved successfully',
+    message: 'Job Post created successfully',
     data: jobPost,
   });
 });
 
-// Create a new job post
-// const createJobPost = catchAsync(async (req: Request, res: Response) => {
-//   const jobPostData = {
-//     ...req.body,
-//     skill: JSON.stringify(req.body.skill),
-//     perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined,
-//     assessment: req.body.assessment
-//       ? JSON.stringify(req.body.assessment)
-//       : undefined,
-//   };
-
-//   const newJobPost = await JobPostService.createJobPost(jobPostData);
-
-//   sendResponse(res, {
-//     statusCode: httpStatus.CREATED,
-//     success: true,
-//     message: 'Job post created successfully',
-//     data: newJobPost,
-//   });
-// });
-// @ts-ignore
-const createJobPost = catchAsync(async (req: Request, res: Response) => {
-  const jobPostData = {
-    ...req.body,
-    skill: req.body.skill ? JSON.stringify(req.body.skill) : undefined,
-    perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined,
-    assessment: req.body.assessment
-      ? JSON.stringify(req.body.assessment)
-      : undefined,
-  };
-
-  try {
-    const newJobPost = await JobPostService.createJobPost(jobPostData);
-
-    sendResponse(res, {
-      statusCode: httpStatus.CREATED,
-      success: true,
-      message: 'Job post created successfully',
-      data: newJobPost,
-    });
-  } catch (error) {
-    sendResponse(res, {
-      statusCode: httpStatus.BAD_REQUEST,
-      success: false,
-      message: 'Failed to create job post',
-      // @ts-ignore
-      error: error.message,
-    });
-  }
-});
-
-// Update a single job post by ID
-const updateSingleJobPost = catchAsync(async (req: Request, res: Response) => {
+const getJobPost = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const jobPostData: Partial<IJobPost> = req.body;
-  const updatedJobPost = await JobPostService.updateSingleJobPost(
-    id,
-    jobPostData,
-  );
-
-  if (!updatedJobPost) {
-    return sendResponse(res, {
-      statusCode: httpStatus.NOT_FOUND,
-      success: false,
-      message: 'Job post not found',
-    });
-  }
-
+  const jobPost = await JobPostService.getJobPost(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Job post updated successfully',
+    message: 'Job Post retrieved successfully',
+    data: jobPost,
+  });
+});
+
+const updateJobPost = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedJobPost = await JobPostService.updateJobPost(id, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Job Post updated successfully',
     data: updatedJobPost,
   });
 });
 
-// Delete a single job post by ID
-const deleteSingleJobPost = catchAsync(async (req: Request, res: Response) => {
+const deleteJobPost = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const deletedJobPost = await JobPostService.deleteSingleJobPost(id);
-
-  if (!deletedJobPost) {
-    return sendResponse(res, {
-      statusCode: httpStatus.NOT_FOUND,
-      success: false,
-      message: 'Job post not found',
-    });
-  }
-
+  const deletedJobPost = await JobPostService.deleteJobPost(id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Job post deleted successfully',
+    message: 'Job Post deleted successfully',
     data: deletedJobPost,
   });
 });
 
+const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
+  const jobPosts = await JobPostService.getAllJobPosts();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Job Posts retrieved successfully',
+    data: jobPosts,
+  });
+});
+
 export const JobPostController = {
-  getAllJobPosts,
-  getSingleJobPost,
   createJobPost,
-  updateSingleJobPost,
-  deleteSingleJobPost,
+  getJobPost,
+  updateJobPost,
+  deleteJobPost,
+  getAllJobPosts,
 };

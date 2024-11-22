@@ -52,7 +52,7 @@ const createApplication = async (
     // @ts-ignore
     data: {
       ...applicationData,
-      candidate: candidateId ? { connect: { id: candidateId } } : undefined, // Connect candidate if candidateId is provided
+      candidateId: candidateId || null, // Use candidateId directly in the data
     },
     include: {
       jobPost: true,
