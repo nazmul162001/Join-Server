@@ -1,8 +1,15 @@
 import { Request, Response } from 'express';
 // @ts-ignore
 import httpStatus from 'http-status';
+import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import {
+  IJobPostFilterRequest,
+  JobPostFilterableFields,
+  JobPostPriceSearchableFields,
+} from './jobPost.interface';
 import { JobPostService } from './jobPost.service';
 
 const createJobPost = catchAsync(async (req: Request, res: Response) => {
@@ -48,13 +55,36 @@ const deleteJobPost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
-  const jobPosts = await JobPostService.getAllJobPosts();
+// const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
+//   const jobPosts = await JobPostService.getAllJobPosts();
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Job Posts retrieved successfully',
+//     data: jobPosts,
+//   });
+// });
+
+const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
+  const filters: IJobPostFilterRequest = pick(
+    req.query,
+    JobPostFilterableFields,
+  );
+  const priceQuery = pick(req.query, JobPostPriceSearchableFields);
+  const options = pick(req.query, paginationFields);
+
+  const jobPosts = await JobPostService.getAllJobPosts(
+    filters,
+    options,
+    priceQuery,
+  );
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Job Posts retrieved successfully',
-    data: jobPosts,
+    message: 'All job posts retrieved successfully',
+    meta: jobPosts.meta,
+    data: jobPosts.data,
   });
 });
 
