@@ -83,21 +83,31 @@ const getSingleJobPost = catchAsync(async (req: Request, res: Response) => {
 const createJobPost = catchAsync(async (req: Request, res: Response) => {
   const jobPostData = {
     ...req.body,
-    skill: JSON.stringify(req.body.skill),
+    skill: req.body.skill ? JSON.stringify(req.body.skill) : undefined,
     perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined,
     assessment: req.body.assessment
       ? JSON.stringify(req.body.assessment)
       : undefined,
   };
 
-  const newJobPost = await JobPostService.createJobPost(jobPostData);
+  try {
+    const newJobPost = await JobPostService.createJobPost(jobPostData);
 
-  sendResponse(res, {
-    statusCode: httpStatus.CREATED,
-    success: true,
-    message: 'Job post created successfully',
-    data: newJobPost,
-  });
+    sendResponse(res, {
+      statusCode: httpStatus.CREATED,
+      success: true,
+      message: 'Job post created successfully',
+      data: newJobPost,
+    });
+  } catch (error) {
+    sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'Failed to create job post',
+      // @ts-ignore
+      error: error.message,
+    });
+  }
 });
 
 // Update a single job post by ID

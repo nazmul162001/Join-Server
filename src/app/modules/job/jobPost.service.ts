@@ -127,10 +127,18 @@ const getSingleJobPost = async (id: string): Promise<JobPost | null> => {
 // };
 
 const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
-  return prisma.jobPost.create({
+  try {
+    const newJobPost = await prisma.jobPost.create({
+      // @ts-ignore
+      data: {
+        ...data,
+      },
+    });
+    return newJobPost;
+  } catch (error) {
     // @ts-ignore
-    data,
-  });
+    throw new Error(`Failed to create job post: ${error.message}`);
+  }
 };
 
 // Update a single job post by ID
