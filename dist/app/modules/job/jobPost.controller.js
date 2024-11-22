@@ -60,15 +60,6 @@ const deleteJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: deletedJobPost,
     });
 }));
-// const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
-//   const jobPosts = await JobPostService.getAllJobPosts();
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Job Posts retrieved successfully',
-//     data: jobPosts,
-//   });
-// });
 const getAllJobPosts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, jobPost_interface_1.JobPostFilterableFields);
     const priceQuery = (0, pick_1.default)(req.query, jobPost_interface_1.JobPostPriceSearchableFields);

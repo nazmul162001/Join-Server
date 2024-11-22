@@ -52,10 +52,6 @@ const deleteJobPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return jobPost;
 });
-// const getAllJobPosts = async (): Promise<JobPost[]> => {
-//   const jobPosts = await prisma.jobPost.findMany();
-//   return jobPosts;
-// };
 const getAllJobPosts = (filters, options, priceQuery) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, size, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { search } = filters, filtersData = __rest(filters, ["search"]);
