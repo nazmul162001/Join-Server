@@ -81,16 +81,6 @@ const getSingleJobPost = catchAsync(async (req: Request, res: Response) => {
 // });
 // @ts-ignore
 const createJobPost = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?.userId;
-  console.log(userId, 'userIDDDDDDDD');
-
-  if (!userId) {
-    return res.status(401).json({
-      success: false,
-      message: 'Unauthorized: User not authenticated',
-    });
-  }
-
   const jobPostData = {
     ...req.body,
     skill: JSON.stringify(req.body.skill),
@@ -98,7 +88,6 @@ const createJobPost = catchAsync(async (req: Request, res: Response) => {
     assessment: req.body.assessment
       ? JSON.stringify(req.body.assessment)
       : undefined,
-    userDataId: userId, // Link job post to the authenticated user
   };
 
   const newJobPost = await JobPostService.createJobPost(jobPostData);

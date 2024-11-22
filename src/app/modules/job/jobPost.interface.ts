@@ -16,7 +16,6 @@ export type IJobPost = {
   salary?: number;
   salaryType?: SalaryType;
   currency?: CurrencyType;
-  postedBy: string;
   status: JobStatus;
   remote: boolean;
   companyName: string;
