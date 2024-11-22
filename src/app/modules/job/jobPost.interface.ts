@@ -1,22 +1,112 @@
-export interface IJobPost {
+export type IJobPost = {
   id: string;
-  title?: string;
-  responsibilities?: string;
-  category?: string;
-  skill?: string;
-  duration?: string;
+  title: string;
+  responsibilities: string;
+  category: string;
+  skill: string;
+  duration: string;
   perks?: string;
   coverLetter?: string;
-  availability?: string;
+  availability: string;
   assessment?: string;
-  vacancy?: number;
-  location?: string;
-  employmentType?: string;
-  experienceLevel?: string;
+  vacancy: number;
+  location: string;
+  employmentType: EmploymentType;
+  experienceLevel: ExperienceLevel;
   salary?: number;
-  salaryType?: string;
-  currency?: string;
-  status?: string;
+  salaryType?: SalaryType;
+  currency?: CurrencyType;
+  status: JobStatus;
+  remote: boolean;
+  companyName: string;
+  postedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type IJobPostFilterRequest = {
+  search?: string;
+  category?: string;
+  location?: string;
+  employmentType?: EmploymentType;
+  experienceLevel?: ExperienceLevel;
+  salary?: number;
+  currency?: CurrencyType;
+  status?: JobStatus;
   remote?: boolean;
-  companyName?: string;
+};
+
+export enum EmploymentType {
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
+  CONTRACT = 'CONTRACT',
+  TEMPORARY = 'TEMPORARY',
+  INTERNSHIP = 'INTERNSHIP',
+  FREELANCE = 'FREELANCE',
 }
+
+export enum ExperienceLevel {
+  JUNIOR = 'JUNIOR',
+  MID = 'MID',
+  SENIOR = 'SENIOR',
+  LEAD = 'LEAD',
+  EXECUTIVE = 'EXECUTIVE',
+}
+
+export enum SalaryType {
+  HOURLY = 'HOURLY',
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
+  ANNUAL = 'ANNUAL',
+}
+
+export enum CurrencyType {
+  USD = 'USD',
+  BDT = 'BDT',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  AUD = 'AUD',
+}
+
+export enum JobStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  CLOSED = 'CLOSED',
+}
+
+// Fields that are searchable and filterable
+export const JobPostSearchableFields = [
+  'title',
+  'category',
+  'location',
+  'companyName',
+];
+export const JobPostFilterableFields = [
+  'search',
+  'title',
+  'category',
+  'skill',
+  'location',
+  'employmentType',
+  'experienceLevel',
+  'salary',
+  'currency',
+  'status',
+  'remote',
+];
+
+// Pagination options interface
+export interface IPaginationOptions {
+  page?: number;
+  size?: number;
+  sortBy?: string;
+  sortOrder?: string;
+}
+
+export type IJobPostPriceFilters = {
+  maxSalary?: number;
+  minSalary?: number;
+};
+
+export const JobPostPriceSearchableFields = ['maxSalary', 'minSalary'];
