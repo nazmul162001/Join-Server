@@ -52,9 +52,6 @@ const jobPostValidateSchema = z.object({
       .enum(['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL'])
       .optional(),
     currency: z.enum(['USD', 'BDT', 'EUR', 'GBP', 'AUD']).optional(),
-    postedBy: z.string({
-      required_error: 'Posted by is required',
-    }),
     status: z.enum(['ACTIVE', 'INACTIVE', 'CLOSED']).default('ACTIVE'),
     remote: z.boolean().default(false),
     companyName: z.string({

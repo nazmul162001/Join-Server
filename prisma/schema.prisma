@@ -161,11 +161,9 @@ model JobPost {
   salary            Int?
   salaryType        SalaryType?
   currency          CurrencyType?
-  postedBy          String
   status            JobStatus    @default(ACTIVE)
   remote            Boolean      @default(false)
   companyName       String
-  userDataId        String?
   postedAt          DateTime     @default(now())
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
