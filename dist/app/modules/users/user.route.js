@@ -17,6 +17,7 @@ user_controller_1.UserController.getUserProfile);
 router.get('/users/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.CANDIDATE), user_controller_1.UserController.getSingleUser);
 router.patch('/users/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.CANDIDATE), user_controller_1.UserController.updateSingleUser);
 router.delete('/users/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.CANDIDATE), user_controller_1.UserController.deleteSingleUser);
+// get current log in user
 router.post('/current-user', user_controller_1.UserController.getLoggedInUser);
 // authentication
 // router.post('/signup', UserController.createUser);

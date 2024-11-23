@@ -6,11 +6,7 @@ import prisma from '../../../shared/prisma';
 
 // get all users
 const getAllUsers = async (): Promise<User[]> => {
-  const users = await prisma.user.findMany({
-    include: {
-      profile: true,
-    },
-  });
+  const users = await prisma.user.findMany();
   return users;
 };
 
@@ -19,20 +15,6 @@ const getSingleUser = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
     where: {
       id,
-    },
-    include: {
-      profile: {
-        include: {
-          tasks: true,
-          recommendations: true,
-          history: true,
-          education: true,
-          workExperience: true,
-          calendarEvents: true,
-          applications: true,
-          preferences: true,
-        },
-      },
     },
   });
   return user;
