@@ -6,7 +6,7 @@ import prisma from '../../../shared/prisma';
 
 // get all users
 const getAllUsers = async (): Promise<User[]> => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({});
   return users;
 };
 
