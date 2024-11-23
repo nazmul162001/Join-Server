@@ -10,7 +10,7 @@ const getAllUsers = async (): Promise<User[]> => {
   return users;
 };
 
-// get single user
+// get single user without relation field
 const getSingleUser = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
     where: {
