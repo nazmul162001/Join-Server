@@ -28,7 +28,7 @@ router.delete(
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
   UserController.deleteSingleUser,
 );
-
+// get current log in user
 router.post('/current-user', UserController.getLoggedInUser);
 
 // authentication

@@ -32,6 +32,20 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id,
         },
+        include: {
+            profile: {
+                include: {
+                    tasks: true,
+                    recommendations: true,
+                    history: true,
+                    education: true,
+                    workExperience: true,
+                    calendarEvents: true,
+                    applications: true,
+                    preferences: true,
+                },
+            },
+        },
     });
     return user;
 });
