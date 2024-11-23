@@ -20,6 +20,20 @@ const getSingleUser = async (id: string): Promise<User | null> => {
     where: {
       id,
     },
+    include: {
+      profile: {
+        include: {
+          tasks: true,
+          recommendations: true,
+          history: true,
+          education: true,
+          workExperience: true,
+          calendarEvents: true,
+          applications: true,
+          preferences: true,
+        },
+      },
+    },
   });
   return user;
 };

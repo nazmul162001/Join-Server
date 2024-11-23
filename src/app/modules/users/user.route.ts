@@ -8,26 +8,28 @@ const router = express.Router();
 router.get('/users', UserController.getAllUsers);
 router.get(
   '/profile',
-  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
-  UserController.getUserProfile
+  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
+  UserController.getUserProfile,
 );
 router.get(
   '/users/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
-  UserController.getSingleUser
+  UserController.getSingleUser,
 );
 
 router.patch(
   '/users/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
-  UserController.updateSingleUser
+  UserController.updateSingleUser,
 );
 
 router.delete(
   '/users/:id',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.CANDIDATE),
-  UserController.deleteSingleUser
+  UserController.deleteSingleUser,
 );
+
+router.post('/current-user', UserController.getLoggedInUser);
 
 // authentication
 // router.post('/signup', UserController.createUser);
