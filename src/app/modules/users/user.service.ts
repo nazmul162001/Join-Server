@@ -6,11 +6,15 @@ import prisma from '../../../shared/prisma';
 
 // get all users
 const getAllUsers = async (): Promise<User[]> => {
-  const users = await prisma.user.findMany({});
+  const users = await prisma.user.findMany({
+    include: {
+      profile: true,
+    },
+  });
   return users;
 };
 
-// get single user without relation field
+// get single user
 const getSingleUser = async (id: string): Promise<User | null> => {
   const user = await prisma.user.findUnique({
     where: {
