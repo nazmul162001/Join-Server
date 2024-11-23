@@ -19,11 +19,7 @@ const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
 // get all users
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield prisma_1.default.user.findMany({
-        include: {
-            profile: true,
-        },
-    });
+    const users = yield prisma_1.default.user.findMany();
     return users;
 });
 // get single user
@@ -31,20 +27,6 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield prisma_1.default.user.findUnique({
         where: {
             id,
-        },
-        include: {
-            profile: {
-                include: {
-                    tasks: true,
-                    recommendations: true,
-                    history: true,
-                    education: true,
-                    workExperience: true,
-                    calendarEvents: true,
-                    applications: true,
-                    preferences: true,
-                },
-            },
         },
     });
     return user;
