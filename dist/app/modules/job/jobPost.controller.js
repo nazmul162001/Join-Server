@@ -73,18 +73,9 @@ const getSingleJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 
 // });
 // @ts-ignore
 const createJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
-    console.log(userId, 'userIDDDDDDDD');
-    if (!userId) {
-        return res.status(401).json({
-            success: false,
-            message: 'Unauthorized: User not authenticated',
-        });
-    }
     const jobPostData = Object.assign(Object.assign({}, req.body), { skill: JSON.stringify(req.body.skill), perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined, assessment: req.body.assessment
             ? JSON.stringify(req.body.assessment)
-            : undefined, userDataId: userId });
+            : undefined });
     const newJobPost = yield jobPost_service_1.JobPostService.createJobPost(jobPostData);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,

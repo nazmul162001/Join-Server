@@ -96,7 +96,7 @@ const getAllJobPosts = (filters, options, priceQuery) => __awaiter(void 0, void 
             ? { [options.sortBy]: options.sortOrder }
             : { postedAt: 'desc' },
         include: {
-            userData: true,
+            applications: true,
         },
     });
     const total = yield prisma_1.default.jobPost.count({ where: whereConditions });
@@ -125,9 +125,6 @@ const createJobPost = (data) => __awaiter(void 0, void 0, void 0, function* () {
     return prisma_1.default.jobPost.create({
         // @ts-ignore
         data,
-        include: {
-            userData: true, // Include user data in the response
-        },
     });
 });
 // Update a single job post by ID
