@@ -1,17 +1,30 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "JobStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'CLOSED');
 
-  - You are about to drop the column `userDataId` on the `job_posts` table. All the data in the column will be lost.
+-- CreateEnum
+CREATE TYPE "EmploymentType" AS ENUM ('FULL_TIME', 'PART_TIME', 'CONTRACT', 'TEMPORARY', 'INTERNSHIP', 'FREELANCE');
 
-*/
--- DropForeignKey
-ALTER TABLE "job_posts" DROP CONSTRAINT "job_posts_userDataId_fkey";
+-- CreateEnum
+CREATE TYPE "ExperienceLevel" AS ENUM ('JUNIOR', 'MID', 'SENIOR', 'LEAD', 'EXECUTIVE');
 
--- AlterTable
-ALTER TABLE "apply_jobs" ADD COLUMN     "candidateId" TEXT;
+-- CreateEnum
+CREATE TYPE "SalaryType" AS ENUM ('HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL');
 
--- AlterTable
-ALTER TABLE "job_posts" DROP COLUMN "userDataId";
+-- CreateEnum
+CREATE TYPE "CurrencyType" AS ENUM ('USD', 'BDT', 'INR');
+
+-- CreateTable
+CREATE TABLE "users" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'user',
+    "name" TEXT NOT NULL DEFAULT '',
+    "profileImage" TEXT NOT NULL DEFAULT '',
+    "phoneNumber" TEXT NOT NULL DEFAULT '',
+
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "CandidateProfile" (
@@ -22,11 +35,11 @@ CREATE TABLE "CandidateProfile" (
     "primaryRole" TEXT,
     "yearsOfExperience" INTEGER,
     "openToRoles" TEXT[],
-    "bio" TEXT NOT NULL,
-    "website" TEXT NOT NULL,
-    "linkedin" TEXT NOT NULL,
-    "github" TEXT NOT NULL,
-    "twitter" TEXT NOT NULL,
+    "bio" TEXT,
+    "website" TEXT,
+    "linkedin" TEXT,
+    "github" TEXT,
+    "twitter" TEXT,
     "resume" TEXT,
     "skills" TEXT[],
     "achievements" TEXT,
@@ -138,6 +151,74 @@ CREATE TABLE "Preferences" (
     CONSTRAINT "Preferences_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "job_posts" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "responsibilities" TEXT NOT NULL,
+    "category" TEXT NOT NULL,
+    "skill" TEXT NOT NULL,
+    "duration" TEXT NOT NULL,
+    "perks" TEXT,
+    "coverLetter" TEXT,
+    "availability" TEXT NOT NULL,
+    "assessment" TEXT,
+    "vacancy" INTEGER NOT NULL,
+    "location" TEXT NOT NULL,
+    "employmentType" "EmploymentType" NOT NULL,
+    "experienceLevel" "ExperienceLevel" NOT NULL,
+    "salary" INTEGER,
+    "salaryType" "SalaryType",
+    "currency" "CurrencyType",
+    "status" "JobStatus" NOT NULL DEFAULT 'ACTIVE',
+    "remote" BOOLEAN NOT NULL DEFAULT false,
+    "companyName" TEXT NOT NULL,
+    "postedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "job_posts_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "apply_jobs" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "linkedin" TEXT NOT NULL,
+    "github" TEXT NOT NULL,
+    "portfolio" TEXT NOT NULL,
+    "coverLetter" TEXT NOT NULL,
+    "jobPostId" TEXT NOT NULL,
+    "candidateId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "apply_jobs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "services" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" INTEGER NOT NULL,
+    "category" TEXT NOT NULL,
+    "images" TEXT NOT NULL,
+    "district" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "channel" TEXT NOT NULL,
+    "hdChannel" TEXT NOT NULL,
+    "connectionCost" INTEGER NOT NULL,
+    "status" TEXT NOT NULL,
+
+    CONSTRAINT "services_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
 -- AddForeignKey
 ALTER TABLE "CandidateProfile" ADD CONSTRAINT "CandidateProfile_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -161,6 +242,9 @@ ALTER TABLE "CalendarEvent" ADD CONSTRAINT "CalendarEvent_candidateId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "Preferences" ADD CONSTRAINT "Preferences_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "CandidateProfile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "apply_jobs" ADD CONSTRAINT "apply_jobs_jobPostId_fkey" FOREIGN KEY ("jobPostId") REFERENCES "job_posts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "apply_jobs" ADD CONSTRAINT "apply_jobs_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "CandidateProfile"("id") ON DELETE SET NULL ON UPDATE CASCADE;

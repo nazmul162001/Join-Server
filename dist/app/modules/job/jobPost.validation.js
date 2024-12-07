@@ -18,11 +18,23 @@ const jobPostValidationSchema = zod_1.z.object({
         employmentType: zod_1.z.string().optional(),
         experienceLevel: zod_1.z.string().optional(),
         salary: zod_1.z.number().optional(),
+<<<<<<< HEAD
+        salaryType: zod_1.z
+            .enum(['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL'])
+            .optional(),
+        currency: zod_1.z.enum(['USD', 'BDT', 'EUR', 'GBP', 'AUD']).optional(),
+        status: zod_1.z.enum(['ACTIVE', 'INACTIVE', 'CLOSED']).default('ACTIVE'),
+        remote: zod_1.z.boolean().default(false),
+        companyName: zod_1.z.string({
+            required_error: 'Company name is required',
+        }),
+=======
         salaryType: zod_1.z.string().optional(),
         currency: zod_1.z.string().optional(),
         status: zod_1.z.string().optional(),
         remote: zod_1.z.boolean().optional(),
         companyName: zod_1.z.string().optional(),
+>>>>>>> 5dbe8504800a0451e7c83baf5a406f0d6545ab0f
     }),
 });
 exports.JobPostValidation = {
