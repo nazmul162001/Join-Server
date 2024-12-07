@@ -2,51 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JobPostValidation = void 0;
 const zod_1 = require("zod");
-const jobPostValidateSchema = zod_1.z.object({
+const jobPostValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
-        title: zod_1.z.string({
-            required_error: 'Title is required',
-        }),
-        responsibilities: zod_1.z.string({
-            required_error: 'Responsibilities are required',
-        }),
-        category: zod_1.z.string({
-            required_error: 'Category is required',
-        }),
-        skill: zod_1.z.array(zod_1.z.string()).nonempty({
-            message: 'At least one skill is required',
-        }),
-        duration: zod_1.z.string({
-            required_error: 'Duration is required',
-        }),
-        perks: zod_1.z.array(zod_1.z.string()).optional(),
+        title: zod_1.z.string().optional(),
+        responsibilities: zod_1.z.string().optional(),
+        category: zod_1.z.string().optional(),
+        skill: zod_1.z.string().optional(),
+        duration: zod_1.z.string().optional(),
+        perks: zod_1.z.string().optional(),
         coverLetter: zod_1.z.string().optional(),
-        availability: zod_1.z.string({
-            required_error: 'Availability is required',
-        }),
-        assessment: zod_1.z.array(zod_1.z.string()).optional(),
-        vacancy: zod_1.z
-            .number({
-            required_error: 'Vacancy is required',
-        })
-            .int(),
-        location: zod_1.z.string({
-            required_error: 'Location is required',
-        }),
-        employmentType: zod_1.z.enum([
-            'FULL_TIME',
-            'PART_TIME',
-            'CONTRACT',
-            'TEMPORARY',
-            'INTERNSHIP',
-            'FREELANCE',
-        ], {
-            required_error: 'Employment type is required',
-        }),
-        experienceLevel: zod_1.z.enum(['JUNIOR', 'MID', 'SENIOR', 'LEAD', 'EXECUTIVE'], {
-            required_error: 'Experience level is required',
-        }),
+        availability: zod_1.z.string().optional(),
+        assessment: zod_1.z.string().optional(),
+        vacancy: zod_1.z.number().optional(),
+        location: zod_1.z.string().optional(),
+        employmentType: zod_1.z.string().optional(),
+        experienceLevel: zod_1.z.string().optional(),
         salary: zod_1.z.number().optional(),
+<<<<<<< HEAD
         salaryType: zod_1.z
             .enum(['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL'])
             .optional(),
@@ -56,8 +28,15 @@ const jobPostValidateSchema = zod_1.z.object({
         companyName: zod_1.z.string({
             required_error: 'Company name is required',
         }),
+=======
+        salaryType: zod_1.z.string().optional(),
+        currency: zod_1.z.string().optional(),
+        status: zod_1.z.string().optional(),
+        remote: zod_1.z.boolean().optional(),
+        companyName: zod_1.z.string().optional(),
+>>>>>>> 5dbe8504800a0451e7c83baf5a406f0d6545ab0f
     }),
 });
 exports.JobPostValidation = {
-    jobPostValidateSchema,
+    jobPostValidationSchema,
 };

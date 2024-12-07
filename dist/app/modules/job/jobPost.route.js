@@ -5,20 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JobPostRoutes = void 0;
 const express_1 = __importDefault(require("express"));
-const user_1 = require("../../../enums/user");
-const auth_1 = __importDefault(require("../../middlewares/auth"));
+const validateRequest_1 = __importDefault(require("../../middlewares/validateRequest"));
 const jobPost_controller_1 = require("./jobPost.controller");
+const jobPost_validation_1 = require("./jobPost.validation");
 const router = express_1.default.Router();
-// Job post routes
-router.get('/jobposts', jobPost_controller_1.JobPostController.getAllJobPosts);
-router.get('/jobposts/:id', 
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-jobPost_controller_1.JobPostController.getSingleJobPost);
-router.post('/jobposts', (0, auth_1.default)(user_1.ENUM_USER_ROLE.HR), jobPost_controller_1.JobPostController.createJobPost);
-router.patch('/jobposts/:id', 
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-jobPost_controller_1.JobPostController.updateSingleJobPost);
-router.delete('/jobposts/:id', 
-//   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-jobPost_controller_1.JobPostController.deleteSingleJobPost);
+router.post('/create-job', (0, validateRequest_1.default)(jobPost_validation_1.JobPostValidation.jobPostValidationSchema), jobPost_controller_1.JobPostController.createJobPost);
+router.get('/', jobPost_controller_1.JobPostController.getAllJobPosts);
+router.get('/:id', jobPost_controller_1.JobPostController.getJobPost);
+router.patch('/:id', (0, validateRequest_1.default)(jobPost_validation_1.JobPostValidation.jobPostValidationSchema), jobPost_controller_1.JobPostController.updateJobPost);
+router.delete('/:id', jobPost_controller_1.JobPostController.deleteJobPost);
 exports.JobPostRoutes = router;
