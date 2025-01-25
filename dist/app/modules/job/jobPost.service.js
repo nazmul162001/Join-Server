@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JobPostService = void 0;
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = __importDefault(require("../../../shared/prisma"));
+<<<<<<< HEAD
 const jobPost_interface_1 = require("./jobPost.interface");
 const createJobPost = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const jobPost = yield prisma_1.default.jobPost.create({
@@ -52,6 +53,14 @@ const deleteJobPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return jobPost;
 });
+=======
+<<<<<<< HEAD
+const createJobPost = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    const jobPost = yield prisma_1.default.jobPost.create({
+=======
+const jobPost_interface_1 = require("./jobPost.interface");
+// Get all job posts with filters
+>>>>>>> 2c9eba5530cb346bfd757c7656663078e561e113
 const getAllJobPosts = (filters, options, priceQuery) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, size, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { search } = filters, filtersData = __rest(filters, ["search"]);
@@ -129,6 +138,58 @@ const getAllJobPosts = (filters, options, priceQuery) => __awaiter(void 0, void 
         data: jobPosts,
     };
 });
+<<<<<<< HEAD
+=======
+// Get a single job post by ID
+const getSingleJobPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.jobPost.findUnique({ where: { id } });
+});
+// Create a new job post
+// const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
+//   return prisma.jobPost.create({
+//     data,
+//   });
+// };
+const createJobPost = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.jobPost.create({
+        // @ts-ignore
+        data,
+    });
+});
+// Update a single job post by ID
+const updateSingleJobPost = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
+    return prisma_1.default.jobPost.update({
+        where: { id },
+        // @ts-ignore
+>>>>>>> c8827303dba647068f68428e0f1d487bdb5c3be4
+        data,
+    });
+    return jobPost;
+});
+const getJobPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const jobPost = yield prisma_1.default.jobPost.findUnique({
+        where: { id },
+    });
+    return jobPost;
+});
+const updateJobPost = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
+    const jobPost = yield prisma_1.default.jobPost.update({
+        where: { id },
+        data,
+    });
+    return jobPost;
+});
+const deleteJobPost = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const jobPost = yield prisma_1.default.jobPost.delete({
+        where: { id },
+    });
+    return jobPost;
+});
+const getAllJobPosts = () => __awaiter(void 0, void 0, void 0, function* () {
+    const jobPosts = yield prisma_1.default.jobPost.findMany();
+    return jobPosts;
+});
+>>>>>>> 2c9eba5530cb346bfd757c7656663078e561e113
 exports.JobPostService = {
     createJobPost,
     getJobPost,

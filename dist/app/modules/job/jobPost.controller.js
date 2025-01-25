@@ -22,7 +22,18 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const jobPost_interface_1 = require("./jobPost.interface");
 const jobPost_service_1 = require("./jobPost.service");
 const createJobPost = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
     const jobPost = yield jobPost_service_1.JobPostService.createJobPost(req.body);
+=======
+<<<<<<< HEAD
+    const jobPost = yield jobPost_service_1.JobPostService.createJobPost(req.body);
+=======
+    const jobPostData = Object.assign(Object.assign({}, req.body), { skill: JSON.stringify(req.body.skill), perks: req.body.perks ? JSON.stringify(req.body.perks) : undefined, assessment: req.body.assessment
+            ? JSON.stringify(req.body.assessment)
+            : undefined });
+    const newJobPost = yield jobPost_service_1.JobPostService.createJobPost(jobPostData);
+>>>>>>> c8827303dba647068f68428e0f1d487bdb5c3be4
+>>>>>>> 2c9eba5530cb346bfd757c7656663078e561e113
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,
         success: true,
