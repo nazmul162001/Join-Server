@@ -1,4 +1,4 @@
-import { JobPost, Prisma } from '@prisma/client';
+import { Job, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
@@ -8,17 +8,16 @@ import {
   JobPostSearchableFields,
 } from './jobPost.interface';
 
-const createJobPost = async (
-  data: Prisma.JobPostCreateInput,
-): Promise<JobPost> => {
-  const jobPost = await prisma.jobPost.create({
+const createJobPost = async (data: Prisma.JobCreateInput): Promise<Job> => {
+  console.log('hello bangladesh');
+  const jobPost = await prisma.job.create({
     data,
   });
   return jobPost;
 };
 
-const getJobPost = async (id: string): Promise<JobPost | null> => {
-  const jobPost = await prisma.jobPost.findUnique({
+const getJobPost = async (id: string): Promise<Job | null> => {
+  const jobPost = await prisma.job.findUnique({
     where: { id },
   });
   return jobPost;
@@ -26,17 +25,17 @@ const getJobPost = async (id: string): Promise<JobPost | null> => {
 
 const updateJobPost = async (
   id: string,
-  data: Partial<Prisma.JobPostUpdateInput>,
-): Promise<JobPost | null> => {
-  const jobPost = await prisma.jobPost.update({
+  data: Partial<Prisma.JobUpdateInput>,
+): Promise<Job | null> => {
+  const jobPost = await prisma.job.update({
     where: { id },
     data,
   });
   return jobPost;
 };
 
-const deleteJobPost = async (id: string): Promise<JobPost> => {
-  const jobPost = await prisma.jobPost.delete({
+const deleteJobPost = async (id: string): Promise<Job> => {
+  const jobPost = await prisma.job.delete({
     where: { id },
   });
   return jobPost;
@@ -48,7 +47,7 @@ const getAllJobPosts = async (
   priceQuery: IJobPostPriceFilters,
 ): Promise<{
   meta: { total: number; page: number; size: number; totalPage: number };
-  data: JobPost[];
+  data: Job[];
 }> => {
   const { page, size, skip } = paginationHelpers.calculatePagination(options);
   const { search, ...filtersData } = filters;
@@ -111,7 +110,7 @@ const getAllJobPosts = async (
   const whereConditions =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const jobPosts = await prisma.jobPost.findMany({
+  const jobPosts = await prisma.job.findMany({
     where: whereConditions,
     skip,
     take: size,
@@ -124,7 +123,7 @@ const getAllJobPosts = async (
     },
   });
 
-  const total = await prisma.jobPost.count({ where: whereConditions });
+  const total = await prisma.job.count({ where: whereConditions });
   const totalPage = Math.ceil(total / size);
 
   return {

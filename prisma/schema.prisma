@@ -160,10 +160,10 @@ model Job {
   availability                     String
   location                         String
   applicationDeadline              DateTime
-  ageRange                         AgeRange
+  ageRange                         String
   gender                           Gender
   jobLevel                         JobLevel
-  stipendType                      StipendType
+  stipendType                      StipendType?
   experience                       ExperienceLevel
   employmentType                   EmploymentType
   salaryType                       SalaryType?
@@ -273,9 +273,9 @@ enum JobType {
 
 enum JobLevel {
   ANY
-  ENTRY_LEVEL
-  MID_LEVEL
-  TOP_LEVEL
+  ENTRY
+  MID
+  TOP
 }
 
 enum ExperienceLevel {
@@ -294,11 +294,11 @@ enum Gender {
   ANY
 }
 
-enum AgeRange {
-  ANY // Any age range
-  BELOW_20 // Below 20 years
-  BETWEEN_20_30 // 20 - < 30 years
-  BETWEEN_30_40 // 30 - < 40 years
-  BETWEEN_40_50 // 40 - < 50 years
-  ABOVE_50 // Over 50 years
-}
+// enum AgeRange {
+//   ANY // Any age range
+//   BELOW_20 // Below 20 years
+//   BETWEEN_20_30 // 20 - < 30 years
+//   BETWEEN_30_40 // 30 - < 40 years
+//   BETWEEN_40_50 // 40 - < 50 years
+//   ABOVE_50 // Over 50 years
+// }

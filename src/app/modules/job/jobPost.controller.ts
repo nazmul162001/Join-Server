@@ -34,6 +34,7 @@ const getJobPost = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateJobPost = catchAsync(async (req: Request, res: Response) => {
+  console.log('hello im in edit method');
   const { id } = req.params;
   const updatedJobPost = await JobPostService.updateJobPost(id, req.body);
   sendResponse(res, {
