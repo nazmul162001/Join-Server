@@ -55,16 +55,6 @@ const deleteJobPost = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const getAllJobPosts = catchAsync(async (_req: Request, res: Response) => {
-//   const jobPosts = await JobPostService.getAllJobPosts();
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Job Posts retrieved successfully',
-//     data: jobPosts,
-//   });
-// });
-
 const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
   const filters: IJobPostFilterRequest = pick(
     req.query,

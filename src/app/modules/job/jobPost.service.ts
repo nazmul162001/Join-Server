@@ -42,11 +42,6 @@ const deleteJobPost = async (id: string): Promise<JobPost> => {
   return jobPost;
 };
 
-// const getAllJobPosts = async (): Promise<JobPost[]> => {
-//   const jobPosts = await prisma.jobPost.findMany();
-//   return jobPosts;
-// };
-
 const getAllJobPosts = async (
   filters: IJobPostFilterRequest,
   options: IPaginationOptions,
