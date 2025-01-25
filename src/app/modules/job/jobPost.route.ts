@@ -1,34 +1,26 @@
 import express from 'express';
-import { ENUM_USER_ROLE } from '../../../enums/user';
-import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
 import { JobPostController } from './jobPost.controller';
+import { JobPostValidation } from './jobPost.validation';
 
 const router = express.Router();
 
-// Job post routes
-router.get('/jobposts', JobPostController.getAllJobPosts);
-router.get(
-  '/jobposts/:id',
-  //   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-  JobPostController.getSingleJobPost,
-);
-
 router.post(
-  '/jobposts',
-  auth(ENUM_USER_ROLE.HR),
+  '/create-job',
+  validateRequest(JobPostValidation.jobPostValidationSchema),
   JobPostController.createJobPost,
 );
 
+router.get('/', JobPostController.getAllJobPosts);
+
+router.get('/:id', JobPostController.getJobPost);
+
 router.patch(
-  '/jobposts/:id',
-  //   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-  JobPostController.updateSingleJobPost,
+  '/:id',
+  validateRequest(JobPostValidation.jobPostValidationSchema),
+  JobPostController.updateJobPost,
 );
 
-router.delete(
-  '/jobposts/:id',
-  //   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.HR),
-  JobPostController.deleteSingleJobPost,
-);
+router.delete('/:id', JobPostController.deleteJobPost);
 
 export const JobPostRoutes = router;

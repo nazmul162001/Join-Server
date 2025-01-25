@@ -9,7 +9,6 @@ import { PreferenceRoutes } from '../modules/candidateProfile/preferrence/prefer
 import { CandidateProfileRoutes } from '../modules/candidateProfile/profile/candidateProfile.route';
 import { RecommendationRoutes } from '../modules/candidateProfile/recommendation/recommendation.route';
 import { TaskRoutes } from '../modules/candidateProfile/task/task.route';
-import { googleRoutes } from '../modules/google/google.route';
 import { JobPostRoutes } from '../modules/job/jobPost.route';
 import { ServiceRoute } from '../modules/service/service.route';
 import { UserRoutes } from '../modules/users/user.route';
@@ -25,6 +24,10 @@ const moduleRoutes = [
     path: '/',
     route: UserRoutes,
   },
+  // {
+  //   path: '/google',
+  //   route: googleRoutes,
+  // },
   {
     path: '/google',
     route: googleRoutes,

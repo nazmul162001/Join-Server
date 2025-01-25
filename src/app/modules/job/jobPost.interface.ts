@@ -3,12 +3,12 @@ export type IJobPost = {
   title: string;
   responsibilities: string;
   category: string;
-  skill: string; // JSON string representing an array of skills
+  skill: string;
   duration: string;
-  perks?: string; // Optional JSON string for an array of perks
+  perks?: string;
   coverLetter?: string;
   availability: string;
-  assessment?: string; // Optional JSON string for an array of assessments
+  assessment?: string;
   vacancy: number;
   location: string;
   employmentType: EmploymentType;

@@ -4,12 +4,13 @@ import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
 
+// revert old
+
 // get all users
 const getAllUsers = async (): Promise<User[]> => {
   const users = await prisma.user.findMany({
     include: {
       profile: true,
-      applications: true,
     },
   });
   return users;

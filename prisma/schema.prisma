@@ -139,40 +139,30 @@ model Preferences {
   candidate                CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
-model Job {
-  id                               String          @id @default(auto()) @map("_id") @db.ObjectId
-  title                            String
-  experienceLevel                  Int
-  skill                            String[]
-  vacancy                          Int
-  job_description                  String
-  who_can_apply                    String[]
-  additional_candidate_preferences String?
-  perks                            String[]
-  ctcMin                           Float?
-  ctcMax                           Float?
-  stipendAmount                    Float?
-  stipendFrequency                 String? // For internships: Frequency (e.g., per month, per week)
-  responsibilities                 String
-  category                         String
-  duration                         String
-  coverLetter                      String?
-  availability                     String
-  location                         String
-  applicationDeadline              DateTime
-  ageRange                         AgeRange
-  gender                           Gender
-  jobLevel                         JobLevel
-  stipendType                      StipendType
-  experience                       ExperienceLevel
-  employmentType                   EmploymentType
-  salaryType                       SalaryType?
-  currency                         CurrencyType?
-  job_type                         JobType
-  status                           JobStatus       @default(ACTIVE)
-  postedAt                         DateTime        @default(now())
-  createdAt                        DateTime        @default(now())
-  updatedAt                        DateTime        @updatedAt
+model JobPost {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  responsibilities String
+  category         String
+  skill            String
+  duration         String
+  perks            String?
+  coverLetter      String?
+  availability     String
+  assessment       String?
+  vacancy          Int
+  location         String
+  employmentType   EmploymentType
+  experienceLevel  ExperienceLevel
+  salary           Int?
+  salaryType       SalaryType?
+  currency         CurrencyType?
+  status           JobStatus       @default(ACTIVE)
+  remote           Boolean         @default(false)
+  companyName      String
+  postedAt         DateTime        @default(now())
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 
   applications ApplyJob[]
 
@@ -189,8 +179,8 @@ model ApplyJob {
   portfolio   String
   coverLetter String
 
-  jobPost   Job    @relation(fields: [jobPostId], references: [id])
-  jobPostId String @db.ObjectId
+  jobPost   JobPost @relation(fields: [jobPostId], references: [id])
+  jobPostId String  @db.ObjectId
 
   candidate   CandidateProfile? @relation(fields: [candidateId], references: [id])
   candidateId String?
@@ -233,15 +223,16 @@ enum EmploymentType {
   TEMPORARY
   INTERNSHIP
   FREELANCE
-  ANY
-}
-
-enum PartTime_FullTime {
-  PART_TIME
-  FULL_TIME
 }
 
 // Enum for experience level
+enum ExperienceLevel {
+  JUNIOR
+  MID
+  SENIOR
+  LEAD
+  EXECUTIVE
+}
 
 // Enum for salary type
 enum SalaryType {
@@ -257,48 +248,4 @@ enum CurrencyType {
   USD
   BDT
   INR
-}
-
-enum StipendType {
-  FIXED
-  NEGOTIABLE
-  PERFORMANCE_BASED
-  UNPAID
-}
-
-enum JobType {
-  JOB
-  INTERNSHIP
-}
-
-enum JobLevel {
-  ANY
-  ENTRY_LEVEL
-  MID_LEVEL
-  TOP_LEVEL
-}
-
-enum ExperienceLevel {
-  ANY // Any experience level
-  FRESHER // Fresher
-  BELOW_1_YEAR // Below 1 year
-  BETWEEN_1_3 // 1 - < 3 years
-  BETWEEN_3_5 // 3 - < 5 years
-  BETWEEN_5_10 // 5 - < 10 years
-  OVER_10 // Over 10 years
-}
-
-enum Gender {
-  MALE
-  FEMALE
-  ANY
-}
-
-enum AgeRange {
-  ANY // Any age range
-  BELOW_20 // Below 20 years
-  BETWEEN_20_30 // 20 - < 30 years
-  BETWEEN_30_40 // 30 - < 40 years
-  BETWEEN_40_50 // 40 - < 50 years
-  ABOVE_50 // Over 50 years
 }

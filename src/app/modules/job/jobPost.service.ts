@@ -1,15 +1,47 @@
-import { JobPost } from '@prisma/client';
+import { JobPost, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
 import {
-  IJobPost,
   IJobPostFilterRequest,
   IJobPostPriceFilters,
   JobPostSearchableFields,
 } from './jobPost.interface';
 
-// Get all job posts with filters
+const createJobPost = async (
+  data: Prisma.JobPostCreateInput,
+): Promise<JobPost> => {
+  const jobPost = await prisma.jobPost.create({
+    data,
+  });
+  return jobPost;
+};
+
+const getJobPost = async (id: string): Promise<JobPost | null> => {
+  const jobPost = await prisma.jobPost.findUnique({
+    where: { id },
+  });
+  return jobPost;
+};
+
+const updateJobPost = async (
+  id: string,
+  data: Partial<Prisma.JobPostUpdateInput>,
+): Promise<JobPost | null> => {
+  const jobPost = await prisma.jobPost.update({
+    where: { id },
+    data,
+  });
+  return jobPost;
+};
+
+const deleteJobPost = async (id: string): Promise<JobPost> => {
+  const jobPost = await prisma.jobPost.delete({
+    where: { id },
+  });
+  return jobPost;
+};
+
 const getAllJobPosts = async (
   filters: IJobPostFilterRequest,
   options: IPaginationOptions,
@@ -23,9 +55,9 @@ const getAllJobPosts = async (
 
   const andConditions = [];
 
-  // Salary filtering logic with type conversion
+  // Salary filtering logic
   if (
-    priceQuery.minSalary !== undefined &&
+    priceQuery.minSalary !== undefined ||
     priceQuery.maxSalary !== undefined
   ) {
     const minSalary = Number(priceQuery.minSalary);
@@ -38,21 +70,13 @@ const getAllJobPosts = async (
           lte: maxSalary,
         },
       });
-    }
-  } else if (priceQuery.minSalary !== undefined) {
-    const minSalary = Number(priceQuery.minSalary);
-
-    if (!isNaN(minSalary)) {
+    } else if (!isNaN(minSalary)) {
       andConditions.push({
         salary: {
           gte: minSalary,
         },
       });
-    }
-  } else if (priceQuery.maxSalary !== undefined) {
-    const maxSalary = Number(priceQuery.maxSalary);
-
-    if (!isNaN(maxSalary)) {
+    } else if (!isNaN(maxSalary)) {
       andConditions.push({
         salary: {
           lte: maxSalary,
@@ -114,48 +138,10 @@ const getAllJobPosts = async (
   };
 };
 
-// Get a single job post by ID
-const getSingleJobPost = async (id: string): Promise<JobPost | null> => {
-  return prisma.jobPost.findUnique({ where: { id } });
-};
-
-// Create a new job post
-// const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
-//   return prisma.jobPost.create({
-//     data,
-//   });
-// };
-
-const createJobPost = async (data: Partial<IJobPost>): Promise<JobPost> => {
-  return prisma.jobPost.create({
-    // @ts-ignore
-    data,
-  });
-};
-
-// Update a single job post by ID
-const updateSingleJobPost = async (
-  id: string,
-  data: Partial<IJobPost>,
-): Promise<JobPost | null> => {
-  return prisma.jobPost.update({
-    where: { id },
-    // @ts-ignore
-    data,
-  });
-};
-
-// Delete a single job post by ID
-const deleteSingleJobPost = async (id: string): Promise<JobPost | null> => {
-  return prisma.jobPost.delete({
-    where: { id },
-  });
-};
-
 export const JobPostService = {
-  getAllJobPosts,
-  getSingleJobPost,
   createJobPost,
-  updateSingleJobPost,
-  deleteSingleJobPost,
+  getJobPost,
+  updateJobPost,
+  deleteJobPost,
+  getAllJobPosts,
 };

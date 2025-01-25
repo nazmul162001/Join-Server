@@ -52,11 +52,11 @@ const createApplication = async (
     // @ts-ignore
     data: {
       ...applicationData,
-      candidate: candidateId ? { connect: { id: candidateId } } : undefined, // Connect candidate if candidateId is provided
+      candidateId: candidateId || null,
     },
     include: {
       jobPost: true,
-      candidate: true, // Include candidate in the response
+      candidate: true,
     },
   });
 
@@ -72,7 +72,7 @@ const updateApplication = async (
     where: { id },
     data,
     include: {
-      jobPost: true, // Include related job post
+      jobPost: true,
     },
   });
 

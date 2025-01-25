@@ -6,14 +6,62 @@ import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import {
+<<<<<<< HEAD
   IJobPost,
+=======
+>>>>>>> 4123d04e80112ba3c2770e869441c32a363ad8e6
   IJobPostFilterRequest,
   JobPostFilterableFields,
   JobPostPriceSearchableFields,
 } from './jobPost.interface';
 import { JobPostService } from './jobPost.service';
 
+<<<<<<< HEAD
 // Get all job posts with filtering
+=======
+const createJobPost = catchAsync(async (req: Request, res: Response) => {
+  const jobPost = await JobPostService.createJobPost(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: 'Job Post created successfully',
+    data: jobPost,
+  });
+});
+
+const getJobPost = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const jobPost = await JobPostService.getJobPost(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Job Post retrieved successfully',
+    data: jobPost,
+  });
+});
+
+const updateJobPost = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedJobPost = await JobPostService.updateJobPost(id, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Job Post updated successfully',
+    data: updatedJobPost,
+  });
+});
+
+const deleteJobPost = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const deletedJobPost = await JobPostService.deleteJobPost(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Job Post deleted successfully',
+    data: deletedJobPost,
+  });
+});
+>>>>>>> 4123d04e80112ba3c2770e869441c32a363ad8e6
 
 const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
   const filters: IJobPostFilterRequest = pick(
@@ -38,6 +86,7 @@ const getAllJobPosts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+<<<<<<< HEAD
 // Get a single job post by ID
 const getSingleJobPost = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -152,4 +201,12 @@ export const JobPostController = {
   createJobPost,
   updateSingleJobPost,
   deleteSingleJobPost,
+=======
+export const JobPostController = {
+  createJobPost,
+  getJobPost,
+  updateJobPost,
+  deleteJobPost,
+  getAllJobPosts,
+>>>>>>> 4123d04e80112ba3c2770e869441c32a363ad8e6
 };
