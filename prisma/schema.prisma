@@ -1,66 +1,62 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id               String            @id @default(uuid())
-  email            String            @unique
-  password         String
-  role             String           @default("user")
-  name             String           @default("")
-  profileImage     String           @default("")
-  phoneNumber      String           @default("")
-  profile     CandidateProfile[]
+  id           String             @id @default(auto()) @map("_id") @db.ObjectId
+  email        String             @unique
+  password     String
+  role         String             @default("user")
+  name         String             @default("")
+  profileImage String             @default("")
+  phoneNumber  String             @default("")
+  profile      CandidateProfile[]
 
   @@map("users")
 }
 
 model CandidateProfile {
-  id                 String   @id @default(uuid())
-  profileCompletion  Int      @default(0)
-  name               String?
-  location           String?
-  primaryRole        String?
-  yearsOfExperience  Int?
-  openToRoles        String[]
-  bio                String?
-  website            String?
-  linkedin           String?
-  github             String?
-  twitter            String?
-  resume             String? 
-  skills             String[]
-  achievements       String?
-  pronouns           String?
-  genderIdentity     String?
-  ethnicity          String[]
-  tasks              SendTask[]
-  recommendations    Recommendation[]
-  history            CandidateHistory[]
-  education          CandidateEducation[]
-  workExperience     WorkExperience[]
-  calendarEvents     CalendarEvent[]
-  applications       ApplyJob[]
-  preferences        Preferences[]
-  
-  candidateId  String
-  candidate    User @relation(fields: [candidateId], references: [id])
-  
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id                String               @id @default(auto()) @map("_id") @db.ObjectId
+  profileCompletion Int                  @default(0)
+  name              String?
+  location          String?
+  primaryRole       String?
+  yearsOfExperience Int?
+  openToRoles       String[]
+  bio               String?
+  website           String?
+  linkedin          String?
+  github            String?
+  twitter           String?
+  resume            String?
+  skills            String[]
+  achievements      String?
+  pronouns          String?
+  genderIdentity    String?
+  ethnicity         String[]
+  tasks             SendTask[]
+  recommendations   Recommendation[]
+  history           CandidateHistory[]
+  education         CandidateEducation[]
+  workExperience    WorkExperience[]
+  calendarEvents    CalendarEvent[]
+  applications      ApplyJob[]
+  preferences       Preferences[]
+
+  candidateId String
+  candidate   User   @relation(fields: [candidateId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SendTask {
-  id          String   @id @default(uuid())
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   dueDate     DateTime?
@@ -70,37 +66,37 @@ model SendTask {
 }
 
 model Recommendation {
-  id          String   @id @default(uuid())
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
   recommendedBy String
-  message      String?
-  candidateId  String
-  candidate    CandidateProfile @relation(fields: [candidateId], references: [id])
+  message       String?
+  candidateId   String
+  candidate     CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
 model CandidateHistory {
-  id          String   @id @default(uuid())
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
   actionType  String
   details     String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime         @default(now())
   candidateId String
   candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
 model CandidateEducation {
-  id          String   @id @default(uuid())
-  schoolName  String
-  degree      String
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
+  schoolName   String
+  degree       String
   fieldOfStudy String
-  startDate   DateTime
-  endDate     DateTime
-  grade       String?
-  description String?
-  candidateId String
-  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+  startDate    DateTime
+  endDate      DateTime
+  grade        String?
+  description  String?
+  candidateId  String
+  candidate    CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
 model WorkExperience {
-  id          String   @id @default(uuid())
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
   companyName String
   title       String
   startDate   DateTime
@@ -111,7 +107,7 @@ model WorkExperience {
 }
 
 model CalendarEvent {
-  id          String   @id @default(uuid())
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   date        DateTime
@@ -121,99 +117,106 @@ model CalendarEvent {
 }
 
 model Preferences {
-  id                     String   @id @default(uuid())
-  areasOfInterest        String[]
-  careerInterests        String[]
-  currentlyLookingFor    String[]
-  workModes              String[]
-  jobType                String[]
-  preferredIndustries    String[]
-  preferredLocations     String[]
-  salaryExpectationRange String? 
-  openToRelocation       Boolean 
-  remoteWorkPreference   Boolean 
-  companySizePreference  String[]
-  employmentLevel        String[]
-  desiredJobTitles       String[]
-  skillImprovementAreas  String[]
+  id                       String           @id @default(auto()) @map("_id") @db.ObjectId
+  areasOfInterest          String[]
+  careerInterests          String[]
+  currentlyLookingFor      String[]
+  workModes                String[]
+  jobType                  String[]
+  preferredIndustries      String[]
+  preferredLocations       String[]
+  salaryExpectationRange   String?
+  openToRelocation         Boolean
+  remoteWorkPreference     Boolean
+  companySizePreference    String[]
+  employmentLevel          String[]
+  desiredJobTitles         String[]
+  skillImprovementAreas    String[]
   preferredWorkEnvironment String?
-  availableStartDate     DateTime?
-  preferredLanguages     String[] 
-  candidateId            String   
-  candidate              CandidateProfile @relation(fields: [candidateId], references: [id])
+  availableStartDate       DateTime?
+  preferredLanguages       String[]
+  candidateId              String
+  candidate                CandidateProfile @relation(fields: [candidateId], references: [id])
 }
 
-model JobPost {
-  id                String       @id @default(uuid())
-  title             String
-  responsibilities  String       @db.Text
-  category          String
-  skill             String       @db.Text
-  duration          String       @db.Text
-  perks             String?      @db.Text
-  coverLetter       String?
-  availability      String
-  assessment        String?      @db.Text
-  vacancy           Int
-  location          String
-  employmentType    EmploymentType
-  experienceLevel   ExperienceLevel
-  salary            Int?
-  salaryType        SalaryType?
-  currency          CurrencyType?
-  status            JobStatus    @default(ACTIVE)
-  remote            Boolean      @default(false)
-  companyName       String
-  postedAt          DateTime     @default(now())
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+model Job {
+  id                               String          @id @default(auto()) @map("_id") @db.ObjectId
+  title                            String
+  experienceLevel                  Int
+  skill                            String[]
+  vacancy                          Int
+  job_description                  String
+  who_can_apply                    String[]
+  additional_candidate_preferences String?
+  perks                            String[]
+  ctcMin                           Float?
+  ctcMax                           Float?
+  stipendAmount                    Float?
+  stipendFrequency                 String? // For internships: Frequency (e.g., per month, per week)
+  responsibilities                 String
+  category                         String
+  duration                         String
+  coverLetter                      String?
+  availability                     String
+  location                         String
+  applicationDeadline              DateTime
+  ageRange                         AgeRange
+  gender                           Gender
+  jobLevel                         JobLevel
+  stipendType                      StipendType
+  experience                       ExperienceLevel
+  employmentType                   EmploymentType
+  salaryType                       SalaryType?
+  currency                         CurrencyType?
+  job_type                         JobType
+  status                           JobStatus       @default(ACTIVE)
+  postedAt                         DateTime        @default(now())
+  createdAt                        DateTime        @default(now())
+  updatedAt                        DateTime        @updatedAt
 
-  applications      ApplyJob[]
+  applications ApplyJob[]
 
   @@map("job_posts")
 }
 
-
 model ApplyJob {
-  id           String   @id @default(uuid())
-  name         String
-  email        String
-  phone        String
-  linkedin     String
-  github       String
-  portfolio    String
-  coverLetter  String   @db.Text
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  phone       String
+  linkedin    String
+  github      String
+  portfolio   String
+  coverLetter String
 
-  jobPost      JobPost  @relation(fields: [jobPostId], references: [id])
-  jobPostId    String   
+  jobPost   Job    @relation(fields: [jobPostId], references: [id])
+  jobPostId String @db.ObjectId
 
-  candidate    CandidateProfile?     @relation(fields: [candidateId], references: [id])
-  candidateId       String? 
+  candidate   CandidateProfile? @relation(fields: [candidateId], references: [id])
+  candidateId String?
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("apply_jobs")
 }
 
 model Service {
-  id   String  @id @default(uuid())
-  name String   
-  price Int
-  category String
-  images String
-  district String
-  location String
-  description String
-  channel String
-  hdChannel String
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  price          Int
+  category       String
+  images         String
+  district       String
+  location       String
+  description    String
+  channel        String
+  hdChannel      String
   connectionCost Int
-  status String
+  status         String
 
   @@map("services")
 }
-
-
 
 // Enum for job status
 enum JobStatus {
@@ -230,16 +233,15 @@ enum EmploymentType {
   TEMPORARY
   INTERNSHIP
   FREELANCE
+  ANY
+}
+
+enum PartTime_FullTime {
+  PART_TIME
+  FULL_TIME
 }
 
 // Enum for experience level
-enum ExperienceLevel {
-  JUNIOR
-  MID
-  SENIOR
-  LEAD
-  EXECUTIVE
-}
 
 // Enum for salary type
 enum SalaryType {
@@ -255,4 +257,48 @@ enum CurrencyType {
   USD
   BDT
   INR
+}
+
+enum StipendType {
+  FIXED
+  NEGOTIABLE
+  PERFORMANCE_BASED
+  UNPAID
+}
+
+enum JobType {
+  JOB
+  INTERNSHIP
+}
+
+enum JobLevel {
+  ANY
+  ENTRY_LEVEL
+  MID_LEVEL
+  TOP_LEVEL
+}
+
+enum ExperienceLevel {
+  ANY // Any experience level
+  FRESHER // Fresher
+  BELOW_1_YEAR // Below 1 year
+  BETWEEN_1_3 // 1 - < 3 years
+  BETWEEN_3_5 // 3 - < 5 years
+  BETWEEN_5_10 // 5 - < 10 years
+  OVER_10 // Over 10 years
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  ANY
+}
+
+enum AgeRange {
+  ANY // Any age range
+  BELOW_20 // Below 20 years
+  BETWEEN_20_30 // 20 - < 30 years
+  BETWEEN_30_40 // 30 - < 40 years
+  BETWEEN_40_50 // 40 - < 50 years
+  ABOVE_50 // Over 50 years
 }
