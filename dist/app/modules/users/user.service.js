@@ -22,6 +22,10 @@ const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield prisma_1.default.user.findMany({
         include: {
             profile: true,
+<<<<<<< HEAD
+=======
+            applications: true,
+>>>>>>> c8827303dba647068f68428e0f1d487bdb5c3be4
         },
     });
     return users;

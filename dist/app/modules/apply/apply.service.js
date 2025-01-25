@@ -65,10 +65,17 @@ const createApplication = (data) => __awaiter(void 0, void 0, void 0, function* 
     // Create the application
     const application = yield prisma_1.default.applyJob.create({
         // @ts-ignore
+<<<<<<< HEAD
         data: Object.assign(Object.assign({}, applicationData), { candidateId: candidateId || null }),
         include: {
             jobPost: true,
             candidate: true,
+=======
+        data: Object.assign(Object.assign({}, applicationData), { candidate: candidateId ? { connect: { id: candidateId } } : undefined }),
+        include: {
+            jobPost: true,
+            candidate: true, // Include candidate in the response
+>>>>>>> c8827303dba647068f68428e0f1d487bdb5c3be4
         },
     });
     return application;
@@ -79,7 +86,11 @@ const updateApplication = (id, data) => __awaiter(void 0, void 0, void 0, functi
         where: { id },
         data,
         include: {
+<<<<<<< HEAD
             jobPost: true,
+=======
+            jobPost: true, // Include related job post
+>>>>>>> c8827303dba647068f68428e0f1d487bdb5c3be4
         },
     });
     if (!updatedApplication) {
