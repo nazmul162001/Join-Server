@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 // @ts-ignore
 import httpStatus from 'http-status';
 import { JwtPayload } from 'jsonwebtoken';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
@@ -98,10 +99,65 @@ const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getLoggedInUser = catchAsync(async (req: Request, res: Response) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'Token is required',
+    });
+  }
+
+  let decodedToken;
+  try {
+    // Use the custom JWT helper to verify the token
+    decodedToken = jwtHelpers.verifyToken(
+      token,
+      process.env.JWT_SECRET as string,
+    );
+  } catch (error) {
+    return sendResponse(res, {
+      statusCode: httpStatus.UNAUTHORIZED,
+      success: false,
+      message: 'Invalid or expired token',
+    });
+  }
+
+  const userId = decodedToken.userId;
+  if (!userId) {
+    return sendResponse(res, {
+      statusCode: httpStatus.BAD_REQUEST,
+      success: false,
+      message: 'Invalid token payload, userId missing',
+    });
+  }
+
+  // Fetch user data from the database
+  const user = await UserService.getSingleUser(userId);
+  if (!user) {
+    return sendResponse(res, {
+      statusCode: httpStatus.NOT_FOUND,
+      success: false,
+      message: 'User not found',
+    });
+  }
+
+  // Return user data
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Logged-in user data retrieved successfully',
+    data: user,
+  });
+});
+
 export const UserController = {
   getAllUsers,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
   getUserProfile,
+  getLoggedInUser,
 };
