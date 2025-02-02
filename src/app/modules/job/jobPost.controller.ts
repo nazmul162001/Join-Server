@@ -13,6 +13,26 @@ import {
 import { JobPostService } from './jobPost.service';
 
 const createJobPost = catchAsync(async (req: Request, res: Response) => {
+  // Convert enums if necessary
+  if (req.body.employmentType) {
+    req.body.employmentType = req.body.employmentType.toUpperCase();
+  }
+  if (req.body.experienceLevel) {
+    req.body.experienceLevel = req.body.experienceLevel.toUpperCase();
+  }
+  if (req.body.salaryType) {
+    req.body.salaryType = req.body.salaryType.toUpperCase();
+  }
+  if (req.body.currency) {
+    req.body.currency = req.body.currency.toUpperCase();
+  }
+  if (req.body.status) {
+    req.body.status = req.body.status.toUpperCase();
+  }
+  if (req.body.jobType) {
+    req.body.jobType = req.body.jobType.toUpperCase();
+  }
+
   const jobPost = await JobPostService.createJobPost(req.body);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

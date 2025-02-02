@@ -2,6 +2,7 @@ export type IJobPost = {
   id: string;
   title: string;
   responsibilities: string;
+  description: string; // Added missing 'description' field
   category: string;
   skill: string;
   duration: string;
@@ -17,6 +18,7 @@ export type IJobPost = {
   salaryType?: SalaryType;
   currency?: CurrencyType;
   status: JobStatus;
+  jobType: JobType; // Added new jobType field
   remote: boolean;
   companyName: string;
   postedAt: Date;
@@ -33,9 +35,13 @@ export type IJobPostFilterRequest = {
   salary?: number;
   currency?: CurrencyType;
   status?: JobStatus;
+  jobType?: JobType; // Added jobType filter
   remote?: boolean;
+  country?: string;
+  city?: string;
 };
 
+// Updated Enums with JobType
 export enum EmploymentType {
   FULL_TIME = 'FULL_TIME',
   PART_TIME = 'PART_TIME',
@@ -51,6 +57,8 @@ export enum ExperienceLevel {
   SENIOR = 'SENIOR',
   LEAD = 'LEAD',
   EXECUTIVE = 'EXECUTIVE',
+  DIRECTOR = 'DIRECTOR',
+  HR = 'HR',
 }
 
 export enum SalaryType {
@@ -58,7 +66,7 @@ export enum SalaryType {
   DAILY = 'DAILY',
   WEEKLY = 'WEEKLY',
   MONTHLY = 'MONTHLY',
-  ANNUAL = 'ANNUAL',
+  YEARLY = 'YEARLY',
 }
 
 export enum CurrencyType {
@@ -75,6 +83,12 @@ export enum JobStatus {
   CLOSED = 'CLOSED',
 }
 
+export enum JobType {
+  REMOTE = 'REMOTE',
+  ONSITE = 'ONSITE',
+  HYBRID = 'HYBRID',
+}
+
 // Fields that are searchable and filterable
 export const JobPostSearchableFields = [
   'title',
@@ -82,6 +96,7 @@ export const JobPostSearchableFields = [
   'location',
   'companyName',
 ];
+
 export const JobPostFilterableFields = [
   'search',
   'title',
@@ -93,6 +108,7 @@ export const JobPostFilterableFields = [
   'salary',
   'currency',
   'status',
+  'jobType',
   'remote',
 ];
 
