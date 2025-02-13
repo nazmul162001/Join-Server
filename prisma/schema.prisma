@@ -143,7 +143,15 @@ model JobPost {
   id                String       @id @default(auto()) @map("_id") @db.ObjectId
   title             String
   responsibilities  String
+  description       String?
+  country           String?
+  city              String?
+  education         String?
+  applicationContact String?
+  benefits          String?
   category          String
+  maxSalary         Int?
+  minSalary         Int?
   skill             String
   duration          String
   perks             String?     
@@ -151,9 +159,10 @@ model JobPost {
   availability      String
   assessment        String?
   vacancy           Int
-  location          String
+  location          String?
+  jobType           String?
   employmentType    EmploymentType
-  experienceLevel   ExperienceLevel
+  experienceLevel   ExperienceLevel?
   salary            Int?
   salaryType        SalaryType?
   currency          CurrencyType?
@@ -215,6 +224,7 @@ enum JobStatus {
   CLOSED
 }
 
+
 // Enum for employment type
 enum EmploymentType {
   FULL_TIME
@@ -232,6 +242,8 @@ enum ExperienceLevel {
   SENIOR
   LEAD
   EXECUTIVE
+  DIRECTOR
+  HR
 }
 
 // Enum for salary type
@@ -240,7 +252,7 @@ enum SalaryType {
   DAILY
   WEEKLY
   MONTHLY
-  ANNUAL
+  YEARLY
 }
 
 // Enum for salary type
@@ -249,3 +261,4 @@ enum CurrencyType {
   BDT
   INR
 }
+
