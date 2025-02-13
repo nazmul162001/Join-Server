@@ -1,31 +1,27 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
-  // directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id               String            @id @default(uuid())
+  id               String            @id @default(auto()) @map("_id") @db.ObjectId
   email            String            @unique
   password         String
   role             String           @default("user")
   name             String           @default("")
   profileImage     String           @default("")
   phoneNumber      String           @default("")
-  profile     CandidateProfile[]
+  profile          CandidateProfile[]
 
   @@map("users")
 }
 
 model CandidateProfile {
-  id                 String   @id @default(uuid())
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
   profileCompletion  Int      @default(0)
   name               String?
   location           String?
@@ -51,16 +47,16 @@ model CandidateProfile {
   calendarEvents     CalendarEvent[]
   applications       ApplyJob[]
   preferences        Preferences[]
-  
-  candidateId  String
-  candidate    User @relation(fields: [candidateId], references: [id])
-  
+
+  candidateId        String
+  candidate          User @relation(fields: [candidateId], references: [id])
+
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }
 
 model SendTask {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   dueDate     DateTime?
@@ -70,7 +66,7 @@ model SendTask {
 }
 
 model Recommendation {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   recommendedBy String
   message      String?
   candidateId  String
@@ -78,7 +74,7 @@ model Recommendation {
 }
 
 model CandidateHistory {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   actionType  String
   details     String
   createdAt   DateTime @default(now())
@@ -87,7 +83,7 @@ model CandidateHistory {
 }
 
 model CandidateEducation {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   schoolName  String
   degree      String
   fieldOfStudy String
@@ -100,7 +96,7 @@ model CandidateEducation {
 }
 
 model WorkExperience {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   companyName String
   title       String
   startDate   DateTime
@@ -111,7 +107,7 @@ model WorkExperience {
 }
 
 model CalendarEvent {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   date        DateTime
@@ -121,7 +117,7 @@ model CalendarEvent {
 }
 
 model Preferences {
-  id                     String   @id @default(uuid())
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
   areasOfInterest        String[]
   careerInterests        String[]
   currentlyLookingFor    String[]
@@ -144,20 +140,29 @@ model Preferences {
 }
 
 model JobPost {
-  id                String       @id @default(uuid())
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
   title             String
-  responsibilities  String       @db.Text
+  responsibilities  String
+  description       String?
+  country           String?
+  city              String?
+  education         String?
+  applicationContact String?
+  benefits          String?
   category          String
-  skill             String       @db.Text
-  duration          String       @db.Text
-  perks             String?      @db.Text
+  maxSalary         Int?
+  minSalary         Int?
+  skill             String
+  duration          String
+  perks             String?     
   coverLetter       String?
   availability      String
-  assessment        String?      @db.Text
+  assessment        String?
   vacancy           Int
-  location          String
+  location          String?
+  jobType           String?
   employmentType    EmploymentType
-  experienceLevel   ExperienceLevel
+  experienceLevel   ExperienceLevel?
   salary            Int?
   salaryType        SalaryType?
   currency          CurrencyType?
@@ -173,22 +178,21 @@ model JobPost {
   @@map("job_posts")
 }
 
-
 model ApplyJob {
-  id           String   @id @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   email        String
   phone        String
   linkedin     String
   github       String
   portfolio    String
-  coverLetter  String   @db.Text
+  coverLetter  String   
 
   jobPost      JobPost  @relation(fields: [jobPostId], references: [id])
-  jobPostId    String   
+  jobPostId    String   @db.ObjectId
 
   candidate    CandidateProfile?     @relation(fields: [candidateId], references: [id])
-  candidateId       String? 
+  candidateId  String? 
 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt
@@ -197,7 +201,7 @@ model ApplyJob {
 }
 
 model Service {
-  id   String  @id @default(uuid())
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
   name String   
   price Int
   category String
@@ -213,14 +217,13 @@ model Service {
   @@map("services")
 }
 
-
-
 // Enum for job status
 enum JobStatus {
   ACTIVE
   INACTIVE
   CLOSED
 }
+
 
 // Enum for employment type
 enum EmploymentType {
@@ -239,6 +242,8 @@ enum ExperienceLevel {
   SENIOR
   LEAD
   EXECUTIVE
+  DIRECTOR
+  HR
 }
 
 // Enum for salary type
@@ -247,7 +252,7 @@ enum SalaryType {
   DAILY
   WEEKLY
   MONTHLY
-  ANNUAL
+  YEARLY
 }
 
 // Enum for salary type
@@ -256,3 +261,4 @@ enum CurrencyType {
   BDT
   INR
 }
+
