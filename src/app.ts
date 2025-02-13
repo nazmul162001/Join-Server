@@ -16,6 +16,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ Define the root route to return a success message
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to the JOIN Server!',
+  });
+});
+
 app.use('/api/v1', routes);
 
 //global error handler
